@@ -14,50 +14,59 @@ import Layout from '../layouts/Layout.astro';
 
   <main class="w-full flex flex-col font-sans text-center items-center py-20 min-h-screen bg-light text-dark">
     
-    <div class="max-w-[800px] w-full px-4 flex flex-col items-center">
+    <div class="w-full px-4 md:px-8 flex flex-col items-center max-w-[1400px]">
       <h1 class="text-4xl md:text-5xl font-black uppercase tracking-[5px] mb-6">Reception Seating</h1>
       <p class="text-sm md:text-base tracking-widest opacity-70 uppercase mb-12">
         Find your seat for the celebration
       </p>
 
       <!-- SEATING CHART CONTAINER -->
-      <div id="seating-chart-container" class="w-full bg-white rounded-3xl shadow-xl border border-dark/10 p-4 md:p-8 relative min-h-[600px] flex flex-col items-center gap-12 overflow-x-auto">
+      <div id="seating-chart-container" class="w-full bg-white rounded-3xl shadow-xl border border-dark/10 p-4 md:p-12 relative min-h-[600px] flex flex-col items-center gap-16 overflow-hidden">
         
-        <!-- STAGE -->
-        <div class="w-full max-w-[400px] h-20 bg-dark text-light flex items-center justify-center rounded-t-3xl border-b-4 border-primary uppercase tracking-[5px] font-black shrink-0">
-          Stage Area
+        <!-- STAGE & STAIRS -->
+        <div class="w-full flex justify-between items-center relative z-10">
+          <div class="w-24 hidden md:block"></div> <!-- Spacer for balance -->
+          
+          <div class="w-full max-w-[500px] h-24 bg-dark text-light flex items-center justify-center rounded-t-3xl border-b-4 border-primary uppercase tracking-[5px] font-black shrink-0 relative">
+            Stage Area
+            
+            <!-- Walking path line to stairs (Right side) -->
+            <div class="hidden md:flex absolute top-1/2 left-full w-[100px] lg:w-[200px] h-[30px] border-t-4 border-r-4 border-dashed border-primary rounded-tr-3xl"></div>
+            <!-- Arrow head -->
+            <div class="hidden md:block absolute top-[calc(50%+30px)] left-[calc(100%+100px-6px)] lg:left-[calc(100%+200px-6px)] w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[10px] border-primary"></div>
+          </div>
+
+          <div class="w-24 h-24 border-2 border-dark/20 bg-gray-100 flex flex-col justify-end items-center pb-2 rounded relative shadow-inner">
+            <div class="absolute inset-0 flex flex-col">
+              <div class="flex-1 border-b border-dark/10 bg-black/5"></div>
+              <div class="flex-1 border-b border-dark/10 bg-black/10"></div>
+              <div class="flex-1 border-b border-dark/10 bg-black/15"></div>
+              <div class="flex-1 bg-black/20"></div>
+            </div>
+            <span class="z-10 text-[10px] font-black uppercase tracking-widest text-dark bg-white/80 px-2 py-1 rounded">Stairs</span>
+          </div>
         </div>
 
         <!-- TABLES CONTAINER -->
-        <div class="w-full max-w-[700px] grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 pb-12 place-items-center" id="tables-container">
+        <div class="w-full grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-24 lg:gap-x-16 lg:gap-y-32 pb-12 place-items-center" id="tables-container">
           <!-- Tables will be rendered here by JS -->
         </div>
 
       </div>
 
       <script>
-        // Placeholder data for the tables (8 seats per table)
+        // Placeholder data for the tables (10 seats per table, 8 tables)
+        const generateGuests = (num) => Array.from({length: num}, (_, i) => `Guest ${i + 1}`);
+        
         const seatingData = [
-          {
-            id: 1,
-            name: "Table 1 (Family)",
-            guests: ["Guest 1", "Guest 2", "Guest 3", "Guest 4", "Guest 5", "Guest 6", "Guest 7", "Guest 8"]
-          },
-          {
-            id: 2,
-            name: "Table 2 (VIP)",
-            guests: ["Guest 1", "Guest 2", "Guest 3", "Guest 4", "Guest 5", "Guest 6", "Guest 7", "Guest 8"]
-          },
-          {
-            id: 3,
-            name: "Table 3",
-            guests: ["Guest 1", "Guest 2", "Guest 3", "Guest 4", "Guest 5", "Guest 6", "Guest 7", "Guest 8"]
-          },
-          {
-            id: 4,
-            name: "Table 4",
-            guests: ["Guest 1", "Guest 2", "Guest 3", "Guest 4", "Guest 5", "Guest 6", "Guest 7", "Guest 8"]
-          }
+          { id: 1, name: "Table 1", guests: generateGuests(10) },
+          { id: 2, name: "Table 2", guests: generateGuests(10) },
+          { id: 3, name: "Table 3", guests: generateGuests(10) },
+          { id: 4, name: "Table 4", guests: generateGuests(10) },
+          { id: 5, name: "Table 5", guests: generateGuests(10) },
+          { id: 6, name: "Table 6", guests: generateGuests(10) },
+          { id: 7, name: "Table 7", guests: generateGuests(10) },
+          { id: 8, name: "Table 8", guests: generateGuests(10) }
         ];
 
         const container = document.getElementById('tables-container');
@@ -72,9 +81,9 @@ import Layout from '../layouts/Layout.astro';
           title.textContent = table.name;
           tableWrapper.appendChild(title);
 
-          // Calculate positions for 8 seats in a circle
+          // Calculate positions for 10 seats in a circle
           const radius = window.innerWidth < 768 ? 110 : 140; // distance from center to seat
-          const totalSeats = 8;
+          const totalSeats = 10;
           
           table.guests.forEach((guest, index) => {
             const angle = (index * (360 / totalSeats)) - 90; // -90 to start at top
