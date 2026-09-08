@@ -1,0 +1,136 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Reception & Seating - Hendry & Valensia">
+  <!-- Floating Navigation -->
+  <div class="fixed top-6 right-6 lg:top-12 lg:right-12 z-50 mix-blend-difference flex gap-2">
+    <a href="/">
+      <button class="rounded-full inline-flex items-center justify-center text-xs lg:text-sm uppercase tracking-widest text-primary font-black hover:bg-primary hover:text-secondary h-8 px-4 lg:h-10 lg:px-6 transition-all duration-300 border border-primary">
+        Back to Invite
+      </button>
+    </a>
+  </div>
+
+  <main class="w-full flex flex-col font-sans text-center items-center py-20 min-h-screen bg-light text-dark">
+    
+    <div class="max-w-[800px] w-full px-4 flex flex-col items-center">
+      <h1 class="text-4xl md:text-5xl font-black uppercase tracking-[5px] mb-6">Reception Seating</h1>
+      <p class="text-sm md:text-base tracking-widest opacity-70 uppercase mb-12">
+        Find your seat for the celebration
+      </p>
+
+      <!-- SEATING CHART CONTAINER -->
+      <div id="seating-chart-container" class="w-full bg-white rounded-3xl shadow-xl border border-dark/10 p-4 md:p-8 relative min-h-[600px] flex flex-col items-center gap-12 overflow-x-auto">
+        
+        <!-- STAGE -->
+        <div class="w-full max-w-[400px] h-20 bg-dark text-light flex items-center justify-center rounded-t-3xl border-b-4 border-primary uppercase tracking-[5px] font-black shrink-0">
+          Stage Area
+        </div>
+
+        <!-- TABLES CONTAINER -->
+        <div class="w-full max-w-[700px] grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 pb-12 place-items-center" id="tables-container">
+          <!-- Tables will be rendered here by JS -->
+        </div>
+
+      </div>
+
+      <script>
+        // Placeholder data for the tables (8 seats per table)
+        const seatingData = [
+          {
+            id: 1,
+            name: "Table 1 (Family)",
+            guests: ["Guest 1", "Guest 2", "Guest 3", "Guest 4", "Guest 5", "Guest 6", "Guest 7", "Guest 8"]
+          },
+          {
+            id: 2,
+            name: "Table 2 (VIP)",
+            guests: ["Guest 1", "Guest 2", "Guest 3", "Guest 4", "Guest 5", "Guest 6", "Guest 7", "Guest 8"]
+          },
+          {
+            id: 3,
+            name: "Table 3",
+            guests: ["Guest 1", "Guest 2", "Guest 3", "Guest 4", "Guest 5", "Guest 6", "Guest 7", "Guest 8"]
+          },
+          {
+            id: 4,
+            name: "Table 4",
+            guests: ["Guest 1", "Guest 2", "Guest 3", "Guest 4", "Guest 5", "Guest 6", "Guest 7", "Guest 8"]
+          }
+        ];
+
+        const container = document.getElementById('tables-container');
+
+        // Render each round table
+        seatingData.forEach(table => {
+          const tableWrapper = document.createElement('div');
+          tableWrapper.className = "relative w-48 h-48 md:w-64 md:h-64 rounded-full border-4 border-dark/20 flex flex-col items-center justify-center bg-light/50 transition-transform hover:scale-105 cursor-pointer group";
+          
+          const title = document.createElement('h3');
+          title.className = "font-serif text-xl md:text-2xl font-bold text-dark group-hover:text-primary transition-colors text-center px-4";
+          title.textContent = table.name;
+          tableWrapper.appendChild(title);
+
+          // Calculate positions for 8 seats in a circle
+          const radius = window.innerWidth < 768 ? 110 : 140; // distance from center to seat
+          const totalSeats = 8;
+          
+          table.guests.forEach((guest, index) => {
+            const angle = (index * (360 / totalSeats)) - 90; // -90 to start at top
+            const radians = angle * (Math.PI / 180);
+            
+            const seat = document.createElement('div');
+            // Tooltip group
+            seat.className = "absolute w-8 h-8 md:w-10 md:h-10 bg-primary/20 rounded-full border-2 border-primary flex items-center justify-center shadow-sm hover:bg-primary hover:text-light transition-colors group/seat z-10";
+            
+            // Calculate absolute position based on center being 50%,50%
+            // In CSS, 50% + cos(rad)*radius
+            const cx = `calc(50% + ${Math.cos(radians) * radius}px)`;
+            const cy = `calc(50% + ${Math.sin(radians) * radius}px)`;
+            
+            seat.style.left = cx;
+            seat.style.top = cy;
+            seat.style.transform = "translate(-50%, -50%)"; // Center the seat dot on the calculated point
+
+            // Seat Number (optional) or icon
+            const seatLabel = document.createElement('span');
+            seatLabel.className = "text-[10px] md:text-xs font-black";
+            seatLabel.textContent = index + 1;
+            seat.appendChild(seatLabel);
+
+            // Tooltip for guest name
+            const tooltip = document.createElement('div');
+            tooltip.className = "absolute opacity-0 pointer-events-none group-hover/seat:opacity-100 bg-dark text-light text-xs py-1 px-3 rounded whitespace-nowrap z-50 transition-opacity";
+            // Position tooltip outside the circle based on angle
+            if (angle > -45 && angle < 45) { // Right side
+              tooltip.style.left = "calc(100% + 10px)";
+              tooltip.style.top = "50%";
+              tooltip.style.transform = "translateY(-50%)";
+            } else if (angle > 135 || angle < -135) { // Left side
+              tooltip.style.right = "calc(100% + 10px)";
+              tooltip.style.top = "50%";
+              tooltip.style.transform = "translateY(-50%)";
+            } else if (angle >= 45 && angle <= 135) { // Bottom
+              tooltip.style.top = "calc(100% + 10px)";
+              tooltip.style.left = "50%";
+              tooltip.style.transform = "translateX(-50%)";
+            } else { // Top
+              tooltip.style.bottom = "calc(100% + 10px)";
+              tooltip.style.left = "50%";
+              tooltip.style.transform = "translateX(-50%)";
+            }
+            tooltip.textContent = guest;
+            seat.appendChild(tooltip);
+
+            tableWrapper.appendChild(seat);
+          });
+
+          container.appendChild(tableWrapper);
+        });
+      </script>
+      
+    </div>
+    
+  </main>
+</Layout>
