@@ -1,0 +1,266 @@
+:root {
+  --bg-color: #fcfcfc; /* Crisp off-white */
+  --ink: #111111; /* Deep charcoal */
+  --ink-light: #555555;
+  --line-color: #dddddd;
+  
+  --font-serif: 'Cormorant Garamond', serif;
+  --font-sans: 'Inter', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  font-family: var(--font-serif);
+  color: var(--ink);
+  background-color: var(--bg-color);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* Prevent vertical body scroll */
+}
+
+/* HORIZONTAL BROCHURE CONTAINER */
+.brochure-container {
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  height: 100vh;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  background-color: #081024;
+}
+
+/* EACH PANEL */
+.brochure-panel {
+  width: 100vw;
+  height: 100vh;
+  flex-shrink: 0;
+  scroll-snap-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 20px;
+}
+
+/* PAGE 1: NEW CLEAN TYPOGRAPHY */
+.line-art-hero {
+  width: 120px;
+  height: auto;
+  mix-blend-mode: multiply;
+  opacity: 0.8;
+  margin-bottom: 25px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.clean-subtitle {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  letter-spacing: 4px;
+  color: var(--ink-light);
+  margin-bottom: 5px;
+}
+
+.clean-names {
+  font-family: var(--font-serif);
+  font-size: 3.5rem;
+  font-weight: 300;
+  color: var(--ink);
+  margin-bottom: 5px;
+  line-height: 1;
+}
+
+.clean-subnames {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  letter-spacing: 3px;
+  color: var(--ink-light);
+}
+
+.clean-name-serif {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 2px;
+}
+
+.clean-parents-name {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 300;
+  color: var(--ink-light);
+  opacity: 0.9;
+}
+
+.clean-ampersand {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  color: var(--ink);
+  margin: 5px 0;
+  opacity: 0.8;
+}
+
+/* PAGE 2: CLEAN PANEL (LINE ART & YELLOW FLOWERS) */
+.clean-panel-container {
+  width: 100%;
+  max-width: 500px;
+  aspect-ratio: 2 / 3;
+  position: relative;
+  overflow: hidden;
+  background-color: #FDF8F5; /* clean off-white */
+  border-radius: 12px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+  /* floral corner accents */
+}
+
+.floral-accent {
+  position: absolute;
+  width: 150px;
+  opacity: 0.8;
+  mix-blend-mode: multiply;
+  /* Use CSS filter to tint the black/white or pink floral branch to yellow */
+  filter: sepia(1) saturate(5) hue-rotate(10deg) opacity(0.7);
+}
+
+.floral-accent.top-left {
+  top: -20px;
+  left: -20px;
+  transform: rotate(-30deg);
+}
+
+.floral-accent.bottom-right {
+  bottom: -20px;
+  right: -20px;
+  transform: rotate(150deg);
+}
+
+.clean-panel-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.clean-title {
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  letter-spacing: 4px;
+  color: var(--ink);
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.event-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+  width: 100%;
+  max-width: 300px;
+}
+
+.line-art-icon {
+  width: 50px;
+  height: auto;
+  margin-right: 20px;
+  mix-blend-mode: multiply;
+  opacity: 0.8;
+}
+
+.event-details {
+  text-align: left;
+  flex: 1;
+}
+
+.clean-event-type {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 2px;
+  color: var(--ink);
+  margin-bottom: 3px;
+}
+
+.clean-time {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.clean-location {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 300;
+  color: var(--ink-light);
+}
+
+.clean-divider {
+  width: 40%;
+  height: 1px;
+  background-color: var(--line-color);
+  margin: 20px 0;
+}
+
+.clean-address {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 300;
+  color: var(--ink-light);
+  text-align: center;
+  max-width: 80%;
+  line-height: 1.5;
+}
+
+/* SWIPE INDICATOR */
+.swipe-indicator {
+  position: absolute;
+  bottom: 25px;
+  right: 25px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink);
+  opacity: 0.8;
+  transition: opacity 0.5s ease;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.swipe-text {
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.swipe-arrow {
+  font-size: 1.2rem;
+  animation: bounceRight 2s infinite;
+}
+
+@keyframes bounceRight {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(8px); }
+}
+

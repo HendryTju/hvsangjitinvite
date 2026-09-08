@@ -1,0 +1,22 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Allow anyone to submit an RSVP
+    match /rsvps/{rsvpId} {
+      allow create: if true;
+      allow read, update, delete: if request.auth != null;
+    }
+    
+    // Allow anyone to submit a Sangjit RSVP
+    match /sangjit_rsvps/{rsvpId} {
+      allow create: if true;
+      allow read, update, delete: if request.auth != null;
+    }
+
+    // Default catch-all for other collections (bingo, users, etc.)
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}

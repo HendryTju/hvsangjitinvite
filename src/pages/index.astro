@@ -1,0 +1,207 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Sangjit - Hendry & Valensia">
+  <!-- Floating Navigation -->
+  <div class="fixed top-6 right-6 lg:top-12 lg:right-12 z-50 mix-blend-difference flex gap-2">
+    <a href="#hero">
+      <button class="rounded-full inline-flex items-center justify-center text-xs lg:text-sm uppercase tracking-widest text-primary font-black hover:bg-primary hover:text-secondary h-8 px-4 lg:h-10 lg:px-6 transition-all duration-300">
+        Hero
+      </button>
+    </a>
+    <a href="#details">
+      <button class="rounded-full inline-flex items-center justify-center text-xs lg:text-sm uppercase tracking-widest text-primary font-black hover:bg-primary hover:text-secondary h-8 px-4 lg:h-10 lg:px-6 transition-all duration-300">
+        Details
+      </button>
+    </a>
+  </div>
+
+  <main class="w-full flex flex-col font-sans text-center md:text-start">
+    
+    <!-- HERO SECTION -->
+    <section id="hero" class="relative min-h-screen w-full bg-dark flex flex-col items-center justify-center p-8 lg:p-20 overflow-hidden">
+      <!-- Full Background Image Placeholder -->
+      <img src="https://picsum.photos/1920/1080?grayscale&blur=2" class="absolute inset-0 w-full h-full object-cover opacity-50 mix-blend-overlay" alt="Background Placeholder">
+
+      <div class="z-10 flex flex-col items-center text-center max-w-5xl mx-auto space-y-12">
+        <div class="text-7xl md:text-9xl text-primary/30 font-serif leading-none mb-4 mix-blend-difference">囍</div>
+        <p class="text-xs md:text-lg font-bold uppercase tracking-[5px] text-primary/80">You Are Invited To The Sangjit Of</p>
+        
+        <h1 class="text-5xl md:text-8xl lg:text-[8rem] font-black uppercase tracking-widest text-primary leading-none mix-blend-difference">
+          Hendry &amp; Valensia
+        </h1>
+        
+        <p class="text-lg md:text-3xl font-bold uppercase tracking-[4px] text-primary mt-4 mix-blend-difference">
+          Friday, 28 Nov 2025
+        </p>
+
+        <p class="text-xs md:text-sm font-semibold tracking-widest mt-12 max-w-lg mx-auto text-primary/70 leading-relaxed uppercase">
+          Please join us in celebrating the traditional engagement ceremony between our families
+        </p>
+        
+        <div class="mt-16 w-full max-w-4xl border-t-2 border-primary/20 pt-12 flex flex-col md:flex-row items-center justify-center md:justify-between gap-8 text-primary">
+          <div class="flex flex-col items-center text-center flex-1">
+            <h2 class="font-serif text-3xl md:text-5xl italic font-bold">Hendry</h2>
+            <p class="text-[10px] md:text-xs font-semibold uppercase tracking-[3px] mt-4 opacity-70">Son of Mr. Tju Sjin Tjhong<br>&amp; Mrs. Susana</p>
+          </div>
+          <div class="hidden md:block h-24 w-[1.5px] bg-primary/20"></div>
+          <div class="md:hidden w-24 h-[1.5px] bg-primary/20 my-4"></div>
+          <div class="flex flex-col items-center text-center flex-1">
+            <h2 class="font-serif text-3xl md:text-5xl italic font-bold">Valensia</h2>
+            <p class="text-[10px] md:text-xs font-semibold uppercase tracking-[3px] mt-4 opacity-70">Daughter of Mr. Bong Ket Hau<br>&amp; Mrs. Liauw Su San</p>
+          </div>
+        </div>
+      </div>
+      
+      <a class="absolute bottom-10 animate-bounce" href="#details">
+        <div class="w-8 h-12 border-2 border-primary rounded-full flex justify-center p-2 mix-blend-difference">
+          <div class="w-1 h-2 bg-primary rounded-full"></div>
+        </div>
+      </a>
+    </section>
+
+    <!-- DETAILS SECTION -->
+    <section id="details" class="relative min-h-screen w-full bg-light text-dark flex flex-col items-center justify-center p-8 lg:p-20 py-32 overflow-hidden">
+      <div class="z-10 flex flex-col items-center text-center max-w-5xl mx-auto w-full">
+        <h2 class="text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-[5px] mb-16">The Ceremony</h2>
+        
+        <div class="flex flex-col w-full items-center gap-6">
+          
+          <!-- Accordion: Sangjit -->
+          <details class="group w-full max-w-3xl border-[1.5px] border-dark rounded-[40px] overflow-hidden bg-light transition-all open:bg-secondary">
+            <summary class="flex justify-between items-center cursor-pointer p-8 md:p-10 outline-none select-none">
+              <h3 class="text-xl md:text-3xl font-black uppercase tracking-[3px]">Sangjit &amp; Lunch</h3>
+              <span class="text-3xl font-light transition-transform group-open:rotate-45">+</span>
+            </summary>
+            <div class="p-8 md:p-10 pt-0 text-left border-t-[1.5px] border-dark/10">
+              <div class="text-base md:text-xl font-medium tracking-widest space-y-4 uppercase">
+                <p class="opacity-70">11.00 - 14.00 WIB</p>
+                <p class="font-black text-2xl">Ahwa Restaurant PIK</p>
+                <p class="text-sm font-bold opacity-60">Pantai Indah Kapuk, North Jakarta</p>
+              </div>
+            </div>
+          </details>
+
+        </div>
+
+        <div class="mt-32 flex flex-col items-center gap-6 opacity-60">
+          <div class="text-4xl font-serif">囍</div>
+          <p class="text-xs md:text-sm font-bold uppercase tracking-[3px] max-w-lg leading-relaxed mt-4">
+            We look forward to sharing this joy with you.<br><br>
+            Cordially yours,<br>
+            The family of Mr. Tju Sjin Tjhong &amp; Mrs. Susana<br>
+            The family of Mr. Bong Ket Hau &amp; Mrs. Liauw Su San
+          </p>
+          <div class="text-3xl font-black tracking-widest mt-8">HV</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RSVP SECTION -->
+    <section id="rsvp" class="relative min-h-screen w-full bg-[#8c1c13] text-[#f4ebd0] flex flex-col items-center justify-center p-8 lg:p-20 overflow-hidden font-sans">
+      <div class="z-10 flex flex-col items-center max-w-2xl mx-auto w-full">
+        <h2 class="text-5xl md:text-6xl lg:text-7xl font-medium tracking-widest mb-6 uppercase">RSVP</h2>
+        <p class="text-xs md:text-sm font-bold uppercase tracking-[4px] mb-12 opacity-90 text-center">
+          We would love for you to join us
+        </p>
+
+        <!-- Form State -->
+        <form id="rsvp-form" class="w-full flex flex-col gap-8 text-[#8c1c13]">
+          <!-- Name -->
+          <div class="flex flex-col gap-2 text-left">
+            <label class="text-xs font-bold uppercase tracking-widest text-[#f4ebd0]" for="guest-name">Full Name</label>
+            <input type="text" id="guest-name" name="name" required class="w-full p-4 rounded-xl bg-[#f4ebd0] border-none outline-none focus:ring-2 ring-[#e2b144] text-base placeholder-[#8c1c13]/50 font-medium" placeholder="Your Name">
+          </div>
+
+          <!-- Email -->
+          <div class="flex flex-col gap-2 text-left">
+            <label class="text-xs font-bold uppercase tracking-widest text-[#f4ebd0]" for="guest-email">Email Address</label>
+            <input type="email" id="guest-email" name="email" required class="w-full p-4 rounded-xl bg-[#f4ebd0] border-none outline-none focus:ring-2 ring-[#e2b144] text-base placeholder-[#8c1c13]/50 font-medium" placeholder="hello@example.com">
+          </div>
+
+          <!-- Phone -->
+          <div class="flex flex-col gap-2 text-left">
+            <label class="text-xs font-bold uppercase tracking-widest text-[#f4ebd0]" for="guest-phone">Phone Number</label>
+            <input type="tel" id="guest-phone" name="phone" required class="w-full p-4 rounded-xl bg-[#f4ebd0] border-none outline-none focus:ring-2 ring-[#e2b144] text-base placeholder-[#8c1c13]/50 font-medium" placeholder="+62 812 3456 7890">
+          </div>
+
+          <!-- Pax -->
+          <div class="flex flex-col gap-2 text-left">
+            <label class="text-xs font-bold uppercase tracking-widest text-[#f4ebd0]" for="guest-pax">Number of Guests</label>
+            <select id="guest-pax" name="pax" required class="w-full p-4 rounded-xl bg-[#f4ebd0] border-none outline-none focus:ring-2 ring-[#e2b144] text-base font-medium appearance-none" style="background-image: url('data:image/svg+xml;utf8,<svg fill=\'%238c1c13\' height=\'24\' viewBox=\'0 0 24 24\' width=\'24\' xmlns=\'http://www.w3.org/2000/svg\'><path d=\'M7 10l5 5 5-5z\'/></svg>'); background-repeat: no-repeat; background-position-x: 98%; background-position-y: 50%;">
+              <option value="1">1 Person</option>
+              <option value="2">2 Persons</option>
+              <option value="3">3 Persons</option>
+              <option value="4">4 Persons</option>
+            </select>
+          </div>
+
+          <!-- Diet -->
+          <div class="flex flex-col gap-2 text-left">
+            <label class="text-xs font-bold uppercase tracking-widest text-[#f4ebd0]" for="guest-diet">Dietary Restrictions</label>
+            <textarea id="guest-diet" name="diet" rows="2" class="w-full p-4 rounded-xl bg-[#f4ebd0] border-none outline-none focus:ring-2 ring-[#e2b144] text-base placeholder-[#8c1c13]/50 font-medium resize-y" placeholder="None"></textarea>
+          </div>
+
+          <button type="submit" id="rsvp-submit-btn" class="mt-4 bg-[#e2b144] text-[#8c1c13] font-bold uppercase tracking-[4px] py-5 px-8 rounded-full hover:bg-[#d4a033] transition-colors w-full text-sm">
+            Submit RSVP
+          </button>
+        </form>
+
+        <!-- Success State -->
+        <div id="rsvp-success" class="hidden w-full flex-col items-center gap-8 text-center mt-8">
+          <h3 class="font-serif italic text-4xl md:text-6xl text-[#e2b144] font-bold">Thank You!</h3>
+          <p class="text-lg md:text-xl font-medium tracking-widest leading-loose text-[#f4ebd0]">
+            Your RSVP has been saved.<br>We can't wait to celebrate with you!
+          </p>
+
+          <div class="w-full max-w-md h-[1px] bg-[#f4ebd0]/30 my-4"></div>
+
+          <p class="text-sm font-bold uppercase tracking-widest mb-2 text-[#f4ebd0]">Save the Date</p>
+          <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Hendry+%26+Valensia+Sangjit&dates=20251128T040000Z/20251128T070000Z&details=Join+us+for+Hendry+and+Valensia's+Sangjit+Ceremony&location=Ahwa+Restaurant+PIK" target="_blank" class="bg-[#e2b144] text-[#8c1c13] px-6 py-4 rounded-full font-bold uppercase tracking-widest hover:scale-105 transition-transform text-xs w-full max-w-sm flex items-center justify-center gap-2">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-7 5h5v5h-5z"/></svg>
+            Add to Calendar
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script type="module">
+    import { submitSangjitRsvp } from '/rsvp.js';
+
+    const form = document.getElementById('rsvp-form');
+    const successDiv = document.getElementById('rsvp-success');
+    const submitBtn = document.getElementById('rsvp-submit-btn');
+
+    if(form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        submitBtn.textContent = "Saving...";
+        submitBtn.disabled = true;
+
+        const formData = new FormData(form);
+        const data = {
+          name: formData.get('name'),
+          email: formData.get('email'),
+          phone: formData.get('phone'),
+          pax: parseInt(formData.get('pax')),
+          diet: formData.get('diet')
+        };
+
+        try {
+          await submitSangjitRsvp(data);
+          form.classList.add('hidden');
+          successDiv.classList.remove('hidden');
+          successDiv.classList.add('flex');
+        } catch(err) {
+          console.error(err);
+          alert("Failed to submit RSVP. Please try again.");
+          submitBtn.textContent = "Submit RSVP";
+          submitBtn.disabled = false;
+        }
+      });
+    }
+  </script>
+</Layout>

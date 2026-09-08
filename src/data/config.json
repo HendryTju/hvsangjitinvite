@@ -1,0 +1,19 @@
+{
+  "site": {
+    "title": "Company Profile Template",
+    "description": "A modern company profile template built with Astro and Tailwind CSS."
+  },
+  "layout": {
+    "showHero": true,
+    "showFeatures": true,
+    "showTestimonials": false,
+    "showContact": true
+  },
+  "copy": {
+    "hero": {
+      "headline": "Innovate Faster.",
+      "subheadline": "We provide the best tools to skyrocket your business.",
+      "ctaText": "Get Started"
+    }
+  }
+}
