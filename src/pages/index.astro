@@ -21,8 +21,8 @@ import Layout from '../layouts/Layout.astro';
     
     <!-- HERO SECTION -->
     <section id="hero" class="relative min-h-screen w-full bg-dark flex flex-col items-center justify-center p-8 lg:p-20 overflow-hidden">
-      <!-- Full Background Image Placeholder -->
-      <img src="https://picsum.photos/1920/1080?grayscale&blur=2" class="absolute inset-0 w-full h-full object-cover opacity-50 mix-blend-overlay" alt="Background Placeholder">
+      <!-- Full Background Image -->
+      <img src="/sangjit-couple.jpg" class="absolute inset-0 w-full h-full object-cover opacity-40" alt="Sangjit couple">
 
       <div class="z-10 flex flex-col items-center text-center max-w-5xl mx-auto space-y-12">
         <div class="text-7xl md:text-9xl text-primary/30 font-serif leading-none mb-4 mix-blend-difference">囍</div>
@@ -33,7 +33,7 @@ import Layout from '../layouts/Layout.astro';
         </h1>
         
         <p class="text-lg md:text-3xl font-bold uppercase tracking-[4px] text-primary mt-4 mix-blend-difference">
-          Friday, 28 Nov 2025
+          Saturday, 28 Nov 2026
         </p>
 
         <p class="text-xs md:text-sm font-semibold tracking-widest mt-12 max-w-lg mx-auto text-primary/70 leading-relaxed uppercase">
@@ -69,7 +69,7 @@ import Layout from '../layouts/Layout.astro';
         <div class="flex flex-col w-full items-center gap-6">
           
           <!-- Accordion: Sangjit -->
-          <details class="group w-full max-w-3xl border-[1.5px] border-dark rounded-[40px] overflow-hidden bg-light transition-all open:bg-secondary">
+          <details class="group w-full max-w-3xl border-[1.5px] border-dark rounded-[40px] overflow-hidden bg-light transition-all open:bg-red-100">
             <summary class="flex justify-between items-center cursor-pointer p-8 md:p-10 outline-none select-none">
               <h3 class="text-xl md:text-3xl font-black uppercase tracking-[3px]">Sangjit &amp; Lunch</h3>
               <span class="text-3xl font-light transition-transform group-open:rotate-45">+</span>
@@ -77,7 +77,7 @@ import Layout from '../layouts/Layout.astro';
             <div class="p-8 md:p-10 pt-0 text-left border-t-[1.5px] border-dark/10">
               <div class="text-base md:text-xl font-medium tracking-widest space-y-4 uppercase">
                 <p class="opacity-70">11.00 - 14.00 WIB</p>
-                <p class="font-black text-2xl">Ahwa Restaurant PIK</p>
+                <p class="font-black text-2xl">Ahwa Restaurant PIK, Lt. 2</p>
                 <p class="text-sm font-bold opacity-60">Pantai Indah Kapuk, North Jakarta</p>
                 
                 <div class="pt-6">
@@ -93,12 +93,20 @@ import Layout from '../layouts/Layout.astro';
 
         <div class="mt-32 flex flex-col items-center gap-6 opacity-60">
           <div class="text-4xl font-serif">囍</div>
-          <p class="text-xs md:text-sm font-bold uppercase tracking-[3px] max-w-lg leading-relaxed mt-4">
-            We look forward to sharing this joy with you.<br><br>
-            Cordially yours,<br>
-            The family of Mr. Tju Sjin Tjhong &amp; Mrs. Susana<br>
-            The family of Mr. Bong Ket Hau &amp; Mrs. Liauw Su San
-          </p>
+          <div class="text-sm md:text-lg font-bold uppercase tracking-[3px] max-w-3xl w-full leading-relaxed mt-4">
+            <p class="mb-8">
+              We look forward to sharing this joy with you.<br><br>
+              Cordially yours,
+            </p>
+            <div class="flex flex-col md:flex-row justify-center items-center md:items-start gap-8 md:gap-16 w-full">
+              <p class="flex-1 text-center md:text-right">
+                The family of<br>Mr. Tju Sjin Tjhong &amp; Mrs. Susana
+              </p>
+              <p class="flex-1 text-center md:text-left">
+                The family of<br>Mr. Bong Ket Hau &amp; Mrs. Liauw Su San
+              </p>
+            </div>
+          </div>
           <div class="text-3xl font-black tracking-widest mt-8">HV</div>
         </div>
       </div>
@@ -164,7 +172,7 @@ import Layout from '../layouts/Layout.astro';
           <div class="w-full max-w-md h-[1px] bg-[#f4ebd0]/30 my-4"></div>
 
           <p class="text-sm font-bold uppercase tracking-widest mb-2 text-[#f4ebd0]">Save the Date</p>
-          <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Hendry+%26+Valensia+Sangjit&dates=20251128T040000Z/20251128T070000Z&details=Join+us+for+Hendry+and+Valensia's+Sangjit+Ceremony&location=Ahwa+Restaurant+PIK" target="_blank" class="bg-[#e2b144] text-[#8c1c13] px-6 py-4 rounded-full font-bold uppercase tracking-widest hover:scale-105 transition-transform text-xs w-full max-w-sm flex items-center justify-center gap-2">
+          <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Hendry+%26+Valensia+Sangjit&dates=20261128T040000Z/20261128T070000Z&details=Join+us+for+Hendry+and+Valensia's+Sangjit+Ceremony&location=Ahwa+Restaurant+PIK,+Lt.+2" target="_blank" class="bg-[#e2b144] text-[#8c1c13] px-6 py-4 rounded-full font-bold uppercase tracking-widest hover:scale-105 transition-transform text-xs w-full max-w-sm flex items-center justify-center gap-2">
             <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-7 5h5v5h-5z"/></svg>
             Add to Calendar
           </a>
@@ -209,5 +217,18 @@ import Layout from '../layouts/Layout.astro';
         }
       });
     }
+  </script>
+  
+  <audio id="bg-audio" loop preload="auto">
+    <source src="/audio.webm#t=17" type="audio/webm">
+  </audio>
+  <script>
+    // Play audio on first user interaction to bypass autoplay restrictions
+    document.addEventListener('click', () => {
+      const audio = document.getElementById('bg-audio');
+      if (audio && audio.paused) {
+        audio.play().catch(e => console.log('Audio autoplay blocked', e));
+      }
+    }, { once: true });
   </script>
 </Layout>
