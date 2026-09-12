@@ -15,7 +15,7 @@ import Layout from '../layouts/Layout.astro';
               + Add Guest
             </button>
             <div class="text-sm font-bold tracking-widest bg-dark text-light px-6 py-3 rounded-full">
-              Total Pax: <span id="total-pax">0</span>
+              Confirmed Pax: <span id="total-pax">0</span>
             </div>
           </div>
         </div>
@@ -149,7 +149,7 @@ import Layout from '../layouts/Layout.astro';
         // Filter out soft-deleted items
         rsvps = rsvps.filter(r => r.deleted !== true);
 
-        let totalPax = 0;
+        let totalConfirmedPax = 0;
         
         if (rsvps.length === 0) {
           if (!skipTableRender) {
@@ -166,7 +166,9 @@ import Layout from '../layouts/Layout.astro';
         const tables = {};
 
         rsvps.forEach(rsvp => {
-          totalPax += parseInt(rsvp.pax || 0);
+          if (rsvp.confirmed) {
+            totalConfirmedPax += parseInt(rsvp.pax || 0);
+          }
           
           // Grouping logic for Seating Chart
           if (rsvp.tableNumber) {
@@ -227,7 +229,7 @@ import Layout from '../layouts/Layout.astro';
           }
         });
 
-        totalPaxEl.textContent = totalPax;
+        totalPaxEl.textContent = totalConfirmedPax;
 
         // Render Seating Chart
         renderSeatingChart(tables);
@@ -333,14 +335,20 @@ import Layout from '../layouts/Layout.astro';
 
       tableKeys.forEach(tableNum => {
         const guests = tables[tableNum];
-        let tablePax = 0;
+        let tableConfirmedPax = 0;
         
         const guestListHtml = guests.map(g => {
-          tablePax += parseInt(g.pax || 0);
+          if (g.confirmed) {
+            tableConfirmedPax += parseInt(g.pax || 0);
+          }
+          
+          const textClass = g.confirmed ? 'text-dark' : 'text-red-500 opacity-80';
+          const badgeClass = g.confirmed ? 'bg-dark text-light' : 'bg-red-500 text-white';
+
           return `
-            <div class="flex justify-between items-center py-2 border-b border-dark/10 last:border-0 text-sm">
+            <div class="flex justify-between items-center py-2 border-b border-dark/10 last:border-0 text-sm ${textClass}">
               <span class="font-bold capitalize">${g.name}</span>
-              <span class="text-xs bg-dark text-light px-2 py-1 rounded-full font-black">${g.pax} pax</span>
+              <span class="text-xs px-2 py-1 rounded-full font-black ${badgeClass}">${g.pax} pax</span>
             </div>
           `;
         }).join('');
@@ -350,7 +358,7 @@ import Layout from '../layouts/Layout.astro';
         card.innerHTML = `
           <div class="flex justify-between items-center mb-4 pb-4 border-b-2 border-dark">
             <h3 class="text-xl font-black uppercase tracking-widest">Table ${tableNum}</h3>
-            <span class="text-xs font-bold uppercase tracking-wider text-dark/70">${tablePax} Total</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-dark/70">${tableConfirmedPax} Confirmed</span>
           </div>
           <div class="flex flex-col gap-1 flex-1">
             ${guestListHtml}
