@@ -4,40 +4,69 @@ import Layout from '../layouts/Layout.astro';
 
 <Layout title="RSVP Admin - Sangjit">
   <main class="w-full min-h-screen bg-light text-dark flex flex-col p-8 lg:p-20 font-sans">
-    <div class="max-w-6xl mx-auto w-full">
-      <div class="flex justify-between items-center mb-12">
-        <h1 class="text-3xl md:text-5xl font-black uppercase tracking-[3px]">RSVP Admin</h1>
-        <div class="text-sm font-bold tracking-widest bg-dark text-light px-6 py-2 rounded-full">
-          Total Pax: <span id="total-pax">0</span>
+    <div class="max-w-[1400px] mx-auto w-full space-y-16">
+      
+      <!-- Main RSVP Table -->
+      <div>
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+          <h1 class="text-3xl md:text-5xl font-black uppercase tracking-[3px]">RSVP Admin</h1>
+          <div class="text-sm font-bold tracking-widest bg-dark text-light px-6 py-2 rounded-full">
+            Total Pax: <span id="total-pax">0</span>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto border-2 border-dark rounded-xl bg-white">
+          <table class="w-full text-left border-collapse min-w-[1000px]">
+            <thead class="bg-dark text-light text-xs uppercase tracking-widest">
+              <tr>
+                <th class="p-4 font-bold border-b border-dark whitespace-nowrap">Date</th>
+                <th class="p-4 font-bold border-b border-dark whitespace-nowrap">Name</th>
+                <th class="p-4 font-bold border-b border-dark whitespace-nowrap text-center">Pax</th>
+                <th class="p-4 font-bold border-b border-dark whitespace-nowrap">Diet</th>
+                <th class="p-4 font-bold border-b border-dark whitespace-nowrap">Family Of</th>
+                <th class="p-4 font-bold border-b border-dark whitespace-nowrap">Table No.</th>
+                <th class="p-4 font-bold border-b border-dark whitespace-nowrap text-center">Confirmed</th>
+              </tr>
+            </thead>
+            <tbody id="rsvp-table-body" class="text-sm font-medium">
+              <tr>
+                <td colspan="7" class="p-8 text-center text-dark/50 italic tracking-widest">Loading RSVPs...</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
-      <div class="overflow-x-auto border-2 border-dark rounded-xl bg-white">
-        <table class="w-full text-left border-collapse min-w-[600px]">
-          <thead class="bg-dark text-light text-xs uppercase tracking-widest">
-            <tr>
-              <th class="p-4 font-bold border-b border-dark">Date</th>
-              <th class="p-4 font-bold border-b border-dark">Name</th>
-              <th class="p-4 font-bold border-b border-dark text-center">Pax</th>
-              <th class="p-4 font-bold border-b border-dark">Dietary Restrictions</th>
-              <th class="p-4 font-bold border-b border-dark text-center">Confirmed</th>
-            </tr>
-          </thead>
-          <tbody id="rsvp-table-body" class="text-sm font-medium">
-            <tr>
-              <td colspan="5" class="p-8 text-center text-dark/50 italic tracking-widest">Loading RSVPs...</td>
-            </tr>
-          </tbody>
-        </table>
+      <!-- Seating Chart / Tables View -->
+      <div>
+        <h2 class="text-2xl md:text-4xl font-black uppercase tracking-[3px] mb-8 border-t-2 border-dark pt-8">Seating Chart Data</h2>
+        <div id="seating-chart-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div class="p-8 text-center text-dark/50 italic tracking-widest col-span-full">Loading Tables...</div>
+        </div>
       </div>
+
     </div>
   </main>
 
   <script type="module">
-    import { getAllSangjitRsvps, toggleSangjitRsvpConfirm } from '/rsvp.js';
+    import { getAllSangjitRsvps, toggleSangjitRsvpConfirm, updateSangjitRsvpAdminFields } from '/rsvp.js';
 
     const tbody = document.getElementById('rsvp-table-body');
     const totalPaxEl = document.getElementById('total-pax');
+    const seatingChartContainer = document.getElementById('seating-chart-container');
+
+    // Debounce helper for inputs
+    function debounce(func, wait) {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
+    }
 
     async function loadRsvps() {
       try {
@@ -45,14 +74,27 @@ import Layout from '../layouts/Layout.astro';
         let totalPax = 0;
         
         if (rsvps.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-dark/50 italic tracking-widest">No RSVPs yet.</td></tr>';
+          tbody.innerHTML = '<tr><td colspan="7" class="p-8 text-center text-dark/50 italic tracking-widest">No RSVPs yet.</td></tr>';
+          seatingChartContainer.innerHTML = '<div class="p-8 text-center text-dark/50 italic tracking-widest col-span-full">No tables assigned.</div>';
           return;
         }
 
         tbody.innerHTML = '';
         
+        // Data for grouping tables
+        const tables = {};
+
         rsvps.forEach(rsvp => {
           totalPax += parseInt(rsvp.pax || 0);
+          
+          // Grouping logic for Seating Chart
+          if (rsvp.tableNumber) {
+            if (!tables[rsvp.tableNumber]) {
+              tables[rsvp.tableNumber] = [];
+            }
+            tables[rsvp.tableNumber].push(rsvp);
+          }
+
           const date = new Date(rsvp.timestamp).toLocaleDateString('en-GB', { 
             day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
           });
@@ -64,10 +106,21 @@ import Layout from '../layouts/Layout.astro';
             <td class="p-4 opacity-70 text-xs">${date}</td>
             <td class="p-4 font-bold text-base capitalize">${rsvp.name || '-'}</td>
             <td class="p-4 text-center font-black">${rsvp.pax || 0}</td>
-            <td class="p-4 opacity-80">${rsvp.diet || 'None'}</td>
+            <td class="p-4 opacity-80 max-w-[200px] truncate" title="${rsvp.diet || ''}">${rsvp.diet || 'None'}</td>
+            <td class="p-4">
+              <select class="field-family w-full bg-transparent border-b border-dark/30 outline-none pb-1 focus:border-dark font-medium" data-id="${rsvp.id}">
+                <option value="" ${!rsvp.familyOf ? 'selected' : ''}>- Select -</option>
+                <option value="Hendry" ${rsvp.familyOf === 'Hendry' ? 'selected' : ''}>Hendry</option>
+                <option value="Valensia" ${rsvp.familyOf === 'Valensia' ? 'selected' : ''}>Valensia</option>
+                <option value="Both" ${rsvp.familyOf === 'Both' ? 'selected' : ''}>Both</option>
+              </select>
+            </td>
+            <td class="p-4">
+              <input type="text" class="field-table w-20 bg-transparent border-b border-dark/30 outline-none pb-1 focus:border-dark font-black text-center" data-id="${rsvp.id}" value="${rsvp.tableNumber || ''}" placeholder="e.g. 1" />
+            </td>
             <td class="p-4 text-center">
               <button 
-                class="toggle-btn w-6 h-6 rounded-full border-2 border-dark flex items-center justify-center transition-colors ${rsvp.confirmed ? 'bg-green-500 border-green-500 text-white' : 'bg-transparent text-transparent hover:bg-dark/10'}"
+                class="toggle-btn w-6 h-6 rounded-full border-2 mx-auto border-dark flex items-center justify-center transition-colors ${rsvp.confirmed ? 'bg-green-500 border-green-500 text-white' : 'bg-transparent text-transparent hover:bg-dark/10'}"
                 data-id="${rsvp.id}"
                 data-status="${rsvp.confirmed}"
               >
@@ -80,7 +133,12 @@ import Layout from '../layouts/Layout.astro';
 
         totalPaxEl.textContent = totalPax;
 
-        // Add toggle listeners
+        // Render Seating Chart
+        renderSeatingChart(tables);
+
+        // Attach Event Listeners
+
+        // Toggle Confirmed
         document.querySelectorAll('.toggle-btn').forEach(btn => {
           btn.addEventListener('click', async (e) => {
             const button = e.currentTarget;
@@ -90,7 +148,6 @@ import Layout from '../layouts/Layout.astro';
             button.style.opacity = '0.5';
             try {
               await toggleSangjitRsvpConfirm(id, currentStatus);
-              // Reload
               await loadRsvps();
             } catch (err) {
               console.error(err);
@@ -100,10 +157,90 @@ import Layout from '../layouts/Layout.astro';
           });
         });
 
+        // Update Family Of
+        document.querySelectorAll('.field-family').forEach(select => {
+          select.addEventListener('change', async (e) => {
+            const id = e.target.getAttribute('data-id');
+            const familyOf = e.target.value;
+            e.target.style.opacity = '0.5';
+            try {
+              await updateSangjitRsvpAdminFields(id, { familyOf });
+            } catch (err) {
+              console.error(err);
+              alert('Failed to update family');
+            }
+            e.target.style.opacity = '1';
+          });
+        });
+
+        // Update Table Number (Debounced to prevent spamming DB on typing)
+        const handleTableChange = debounce(async (e) => {
+          const id = e.target.getAttribute('data-id');
+          const tableNumber = e.target.value;
+          e.target.style.opacity = '0.5';
+          try {
+            await updateSangjitRsvpAdminFields(id, { tableNumber });
+            // Reload to update seating chart
+            await loadRsvps();
+          } catch (err) {
+            console.error(err);
+            alert('Failed to update table number');
+          }
+          e.target.style.opacity = '1';
+        }, 800);
+
+        document.querySelectorAll('.field-table').forEach(input => {
+          input.addEventListener('input', handleTableChange);
+        });
+
       } catch (err) {
         console.error("Failed to load RSVPs:", err);
-        tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-red-500 font-bold uppercase tracking-widest">Error loading data</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" class="p-8 text-center text-red-500 font-bold uppercase tracking-widest">Error loading data</td></tr>';
       }
+    }
+
+    function renderSeatingChart(tables) {
+      seatingChartContainer.innerHTML = '';
+      const tableKeys = Object.keys(tables).sort((a, b) => {
+        // Try numerical sort first
+        const numA = parseInt(a);
+        const numB = parseInt(b);
+        if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
+        return a.localeCompare(b);
+      });
+
+      if (tableKeys.length === 0) {
+        seatingChartContainer.innerHTML = '<div class="p-8 text-center text-dark/50 italic tracking-widest col-span-full">No tables assigned yet.</div>';
+        return;
+      }
+
+      tableKeys.forEach(tableNum => {
+        const guests = tables[tableNum];
+        let tablePax = 0;
+        
+        const guestListHtml = guests.map(g => {
+          tablePax += parseInt(g.pax || 0);
+          return `
+            <div class="flex justify-between items-center py-2 border-b border-dark/10 last:border-0 text-sm">
+              <span class="font-bold capitalize">${g.name}</span>
+              <span class="text-xs bg-dark text-light px-2 py-1 rounded-full font-black">${g.pax} pax</span>
+            </div>
+          `;
+        }).join('');
+
+        const card = document.createElement('div');
+        card.className = 'border-2 border-dark rounded-xl bg-white p-6 flex flex-col h-full shadow-[4px_4px_0px_rgba(28,25,23,1)]';
+        card.innerHTML = `
+          <div class="flex justify-between items-center mb-4 pb-4 border-b-2 border-dark">
+            <h3 class="text-xl font-black uppercase tracking-widest">Table ${tableNum}</h3>
+            <span class="text-xs font-bold uppercase tracking-wider text-dark/70">${tablePax} Total</span>
+          </div>
+          <div class="flex flex-col gap-1 flex-1">
+            ${guestListHtml}
+          </div>
+        `;
+        seatingChartContainer.appendChild(card);
+      });
     }
 
     loadRsvps();

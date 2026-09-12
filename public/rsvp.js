@@ -152,6 +152,25 @@ export async function toggleSangjitRsvpConfirm(id, currentStatus) {
   }
 }
 
+export async function updateSangjitRsvpAdminFields(id, fields) {
+  if (isEmulated) {
+    const rsvps = getSangjitLocalRsvps();
+    const index = rsvps.findIndex(r => r.id === id);
+    if (index !== -1) {
+      rsvps[index] = { ...rsvps[index], ...fields };
+      saveSangjitLocalRsvps(rsvps);
+    }
+  } else {
+    try {
+      const rsvpRef = doc(db, "sangjit_rsvps", id);
+      await updateDoc(rsvpRef, fields);
+    } catch (error) {
+      console.error("Error updating admin fields: ", error);
+      throw error;
+    }
+  }
+}
+
 // ==========================================
 // ADMIN FUNCTIONS
 // ==========================================
