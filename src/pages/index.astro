@@ -219,16 +219,28 @@ import Layout from '../layouts/Layout.astro';
     }
   </script>
   
-  <audio id="bg-audio" loop preload="auto">
+  <audio id="bg-audio" autoplay loop preload="auto">
     <source src="/audio.webm#t=17" type="audio/webm">
   </audio>
   <script>
     // Play audio on first user interaction to bypass autoplay restrictions
-    document.addEventListener('click', () => {
+    const initAudio = () => {
       const audio = document.getElementById('bg-audio');
       if (audio && audio.paused) {
         audio.play().catch(e => console.log('Audio autoplay blocked', e));
       }
-    }, { once: true });
+      // Remove listeners once played
+      ['click', 'touchstart', 'scroll'].forEach(event => {
+        document.removeEventListener(event, initAudio);
+      });
+    };
+    
+    // Attempt to play immediately (will likely be blocked by browser)
+    document.getElementById('bg-audio').play().catch(e => {
+      // If blocked, wait for user interaction
+      ['click', 'touchstart', 'scroll'].forEach(event => {
+        document.addEventListener(event, initAudio, { once: true });
+      });
+    });
   </script>
 </Layout>
