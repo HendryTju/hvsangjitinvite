@@ -91,6 +91,7 @@ const saveSangjitLocalRsvps = (rsvps) => localStorage.setItem(SANGJIT_LOCAL_KEY,
 export async function submitSangjitRsvp(data) {
   const rsvpDoc = {
     ...data,
+    source: "form",
     timestamp: new Date().toISOString(),
     confirmed: false
   };
@@ -201,6 +202,7 @@ export async function adminAddRsvp(data, collectionType) {
   
   const rsvpDoc = {
     ...data,
+    source: "admin",
     timestamp: new Date().toISOString(),
     confirmed: true // Admin additions are auto-confirmed
   };
@@ -226,6 +228,7 @@ export async function adminAddRsvp(data, collectionType) {
 export async function adminAddSangjitRsvp(data) {
   const rsvpDoc = {
     ...data,
+    source: "admin",
     timestamp: new Date().toISOString(),
     confirmed: true // Auto confirm when admin adds
   };

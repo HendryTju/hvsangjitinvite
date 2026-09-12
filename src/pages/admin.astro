@@ -181,9 +181,13 @@ import Layout from '../layouts/Layout.astro';
           const tr = document.createElement('tr');
           tr.className = 'border-b border-dark/10 hover:bg-dark/5 transition-colors';
           
+          const sourceBadge = rsvp.source === 'admin' 
+            ? '<span class="text-[10px] bg-blue-100 text-blue-800 px-2 py-0.5 rounded ml-2 uppercase font-bold tracking-widest align-middle">Admin</span>'
+            : '<span class="text-[10px] bg-gray-200 text-gray-700 px-2 py-0.5 rounded ml-2 uppercase font-bold tracking-widest align-middle">Form</span>';
+
           tr.innerHTML = `
             <td class="p-4 opacity-70 text-xs">${date}</td>
-            <td class="p-4 font-bold text-base capitalize">${rsvp.name || '-'}</td>
+            <td class="p-4 font-bold text-base capitalize whitespace-nowrap">${rsvp.name || '-'}${sourceBadge}</td>
             <td class="p-4 text-center font-black">${rsvp.pax || 0}</td>
             <td class="p-4 opacity-80 max-w-[200px] truncate" title="${rsvp.diet || ''}">${rsvp.diet || 'None'}</td>
             <td class="p-4">
