@@ -77,7 +77,14 @@ import Layout from '../layouts/Layout.astro';
 
       <!-- Seating Chart / Tables View -->
       <div>
-        <h2 class="text-2xl md:text-4xl font-black uppercase tracking-[3px] mb-8 border-t-2 border-dark pt-8">Seating Chart Data</h2>
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 border-t-2 border-dark pt-8 gap-4">
+          <h2 class="text-2xl md:text-4xl font-black uppercase tracking-[3px]">Seating Chart Data</h2>
+          <div class="flex flex-wrap items-center gap-4 text-xs font-bold uppercase tracking-widest text-dark/70 bg-white px-4 py-2 rounded-full border-2 border-dark">
+            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>Hendry</div>
+            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-yellow-400"></span>Valensia</div>
+            <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-green-500"></span>Both</div>
+          </div>
+        </div>
         <div id="seating-chart-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           <div class="p-8 text-center text-dark/50 italic tracking-widest col-span-full">Loading Tables...</div>
         </div>
@@ -345,10 +352,28 @@ import Layout from '../layouts/Layout.astro';
           const textClass = g.confirmed ? 'text-dark' : 'text-red-500 opacity-80';
           const badgeClass = g.confirmed ? 'bg-dark text-light' : 'bg-red-500 text-white';
 
+          // diet label (only show if it's not "none" or empty)
+          const hasDiet = g.diet && g.diet.toLowerCase() !== 'none' && g.diet.trim() !== '';
+          const dietText = hasDiet
+            ? `<div class="text-[10px] uppercase font-bold tracking-widest text-orange-600 mt-1 ml-4 border-l-2 border-orange-600 pl-2">Diet: ${g.diet}</div>`
+            : '';
+
+          // family dot
+          let dotColorClass = 'bg-gray-300';
+          if (g.familyOf === 'Hendry') dotColorClass = 'bg-blue-500';
+          else if (g.familyOf === 'Valensia') dotColorClass = 'bg-yellow-400';
+          else if (g.familyOf === 'Both') dotColorClass = 'bg-green-500';
+
           return `
-            <div class="flex justify-between items-center py-2 border-b border-dark/10 last:border-0 text-sm ${textClass}">
-              <span class="font-bold capitalize">${g.name}</span>
-              <span class="text-xs px-2 py-1 rounded-full font-black ${badgeClass}">${g.pax} pax</span>
+            <div class="py-3 border-b border-dark/10 last:border-0 text-sm ${textClass}">
+              <div class="flex justify-between items-start">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full ${dotColorClass} flex-shrink-0 shadow-sm" title="Family of ${g.familyOf || 'Unknown'}"></span>
+                  <span class="font-bold capitalize leading-none pt-0.5">${g.name}</span>
+                </div>
+                <span class="text-xs px-2 py-1 rounded-full font-black leading-none ${badgeClass}">${g.pax} pax</span>
+              </div>
+              ${dietText}
             </div>
           `;
         }).join('');
