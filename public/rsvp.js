@@ -223,44 +223,25 @@ export async function adminAddRsvp(data, collectionType) {
   }
 }
 
-// ==========================================
-// TEST FUNCTIONS
-// ==========================================
-export async function addSangjitDummyData() {
-  const dummies = [
-    { name: "Alice Lee", pax: 2, diet: "None", familyOf: "Hendry", tableNumber: "1", confirmed: true },
-    { name: "Bob Smith", pax: 1, diet: "Vegetarian", familyOf: "Valensia", tableNumber: "1", confirmed: false },
-    { name: "Charlie Tan", pax: 4, diet: "None", familyOf: "Both", tableNumber: "2", confirmed: true },
-    { name: "David Chen", pax: 3, diet: "Peanut Allergy", familyOf: "Hendry", tableNumber: "2", confirmed: true },
-    { name: "Elena Wu", pax: 5, diet: "None", familyOf: "Valensia", tableNumber: "3", confirmed: false },
-  ];
-  for (const d of dummies) {
-    if (isEmulated) {
-      const rsvps = getSangjitLocalRsvps();
-      d.id = "emulated_dummy_" + Math.random().toString(36).substring(2, 9);
-      d.timestamp = new Date().toISOString();
-      rsvps.push(d);
-      saveSangjitLocalRsvps(rsvps);
-    } else {
-      await addDoc(collection(db, "sangjit_rsvps"), {
-        ...d,
-        timestamp: new Date().toISOString()
-      });
-    }
-  }
-}
+export async function adminAddSangjitRsvp(data) {
+  const rsvpDoc = {
+    ...data,
+    timestamp: new Date().toISOString(),
+    confirmed: true // Auto confirm when admin adds
+  };
 
-export async function deleteAllSangjitRsvps() {
   if (isEmulated) {
-    saveSangjitLocalRsvps([]);
+    const rsvps = getSangjitLocalRsvps();
+    rsvpDoc.id = "emulated_admin_" + Math.random().toString(36).substring(2, 9);
+    rsvps.push(rsvpDoc);
+    saveSangjitLocalRsvps(rsvps);
+    return rsvpDoc.id;
   } else {
     try {
-      const querySnapshot = await getDocs(collection(db, "sangjit_rsvps"));
-      for (const d of querySnapshot.docs) {
-        await deleteDoc(doc(db, "sangjit_rsvps", d.id));
-      }
+      const docRef = await addDoc(collection(db, "sangjit_rsvps"), rsvpDoc);
+      return docRef.id;
     } catch (error) {
-      console.error("Error deleting all RSVPs: ", error);
+      console.error("Error admin adding Sangjit document: ", error);
       throw error;
     }
   }

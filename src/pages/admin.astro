@@ -11,20 +11,49 @@ import Layout from '../layouts/Layout.astro';
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 w-full">
           <h1 class="text-3xl md:text-5xl font-black uppercase tracking-[3px]">RSVP Admin</h1>
           <div class="flex flex-wrap items-center gap-4">
-            <button id="btn-add-dummy" class="text-xs font-bold uppercase tracking-widest border-2 border-dark text-dark hover:bg-dark hover:text-light transition-colors px-4 py-2 rounded-full">
-              + Add Dummy Data
+            <button id="btn-toggle-add" class="text-xs font-bold uppercase tracking-widest border-2 border-dark bg-dark text-light hover:bg-transparent hover:text-dark transition-colors px-6 py-3 rounded-full">
+              + Add Guest
             </button>
-            <button id="btn-clear-all" class="text-xs font-bold uppercase tracking-widest border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-colors px-4 py-2 rounded-full">
-              Clear All Data
-            </button>
-            <div class="text-sm font-bold tracking-widest bg-dark text-light px-6 py-2 rounded-full">
+            <div class="text-sm font-bold tracking-widest bg-dark text-light px-6 py-3 rounded-full">
               Total Pax: <span id="total-pax">0</span>
             </div>
           </div>
         </div>
 
-        <div class="overflow-x-auto border-2 border-dark rounded-xl bg-white">
-          <table class="w-full text-left border-collapse min-w-[1000px]">
+        <!-- Add Guest Form (Hidden by default) -->
+        <form id="add-guest-form" class="hidden flex-wrap items-end gap-4 bg-white p-6 rounded-xl border-2 border-dark mb-8">
+          <div class="flex flex-col gap-1 flex-1 min-w-[200px]">
+            <label class="text-xs font-bold uppercase tracking-widest">Name</label>
+            <input type="text" name="name" required class="border-b-2 border-dark/30 p-2 outline-none focus:border-dark font-medium bg-transparent" placeholder="Guest Name">
+          </div>
+          <div class="flex flex-col gap-1 w-24">
+            <label class="text-xs font-bold uppercase tracking-widest">Pax</label>
+            <input type="number" name="pax" required min="1" class="border-b-2 border-dark/30 p-2 outline-none focus:border-dark font-medium bg-transparent text-center" value="1">
+          </div>
+          <div class="flex flex-col gap-1 flex-1 min-w-[150px]">
+            <label class="text-xs font-bold uppercase tracking-widest">Diet</label>
+            <input type="text" name="diet" class="border-b-2 border-dark/30 p-2 outline-none focus:border-dark font-medium bg-transparent" placeholder="None">
+          </div>
+          <div class="flex flex-col gap-1 w-32">
+            <label class="text-xs font-bold uppercase tracking-widest">Family Of</label>
+            <select name="familyOf" class="border-b-2 border-dark/30 p-2 outline-none focus:border-dark font-medium bg-transparent cursor-pointer">
+              <option value="">- Select -</option>
+              <option value="Hendry">Hendry</option>
+              <option value="Valensia">Valensia</option>
+              <option value="Both">Both</option>
+            </select>
+          </div>
+          <div class="flex flex-col gap-1 w-24">
+            <label class="text-xs font-bold uppercase tracking-widest">Table No.</label>
+            <input type="text" name="tableNumber" class="border-b-2 border-dark/30 p-2 outline-none focus:border-dark font-medium bg-transparent text-center" placeholder="e.g. 1">
+          </div>
+          <button type="submit" id="btn-submit-guest" class="bg-dark text-light font-bold uppercase tracking-widest px-6 py-2 rounded-full hover:opacity-80 transition-opacity h-[42px]">
+            Save
+          </button>
+        </form>
+
+        <div class="overflow-x-auto border-2 border-dark rounded-xl bg-white shadow-[4px_4px_0px_rgba(28,25,23,1)]">
+          <table class="w-full text-left border-collapse min-w-[1100px]">
             <thead class="bg-dark text-light text-xs uppercase tracking-widest">
               <tr>
                 <th class="p-4 font-bold border-b border-dark whitespace-nowrap">Date</th>
@@ -34,11 +63,12 @@ import Layout from '../layouts/Layout.astro';
                 <th class="p-4 font-bold border-b border-dark whitespace-nowrap">Family Of</th>
                 <th class="p-4 font-bold border-b border-dark whitespace-nowrap">Table No.</th>
                 <th class="p-4 font-bold border-b border-dark whitespace-nowrap text-center">Confirmed</th>
+                <th class="p-4 font-bold border-b border-dark whitespace-nowrap text-center">Actions</th>
               </tr>
             </thead>
             <tbody id="rsvp-table-body" class="text-sm font-medium">
               <tr>
-                <td colspan="7" class="p-8 text-center text-dark/50 italic tracking-widest">Loading RSVPs...</td>
+                <td colspan="8" class="p-8 text-center text-dark/50 italic tracking-widest">Loading RSVPs...</td>
               </tr>
             </tbody>
           </table>
@@ -57,35 +87,47 @@ import Layout from '../layouts/Layout.astro';
   </main>
 
   <script type="module">
-    import { getAllSangjitRsvps, toggleSangjitRsvpConfirm, updateSangjitRsvpAdminFields, addSangjitDummyData, deleteAllSangjitRsvps } from '/rsvp.js';
+    import { getAllSangjitRsvps, toggleSangjitRsvpConfirm, updateSangjitRsvpAdminFields, adminAddSangjitRsvp } from '/rsvp.js';
 
     const tbody = document.getElementById('rsvp-table-body');
     const totalPaxEl = document.getElementById('total-pax');
     const seatingChartContainer = document.getElementById('seating-chart-container');
+    const addGuestForm = document.getElementById('add-guest-form');
+    const btnToggleAdd = document.getElementById('btn-toggle-add');
+    const btnSubmitGuest = document.getElementById('btn-submit-guest');
 
-    document.getElementById('btn-add-dummy').addEventListener('click', async (e) => {
-      e.target.textContent = 'Adding...';
-      try {
-        await addSangjitDummyData();
-        await loadRsvps();
-      } catch (err) {
-        console.error(err);
-        alert('Failed to add dummy data');
-      }
-      e.target.textContent = '+ Add Dummy Data';
+    btnToggleAdd.addEventListener('click', () => {
+      addGuestForm.classList.toggle('hidden');
+      addGuestForm.classList.toggle('flex');
     });
 
-    document.getElementById('btn-clear-all').addEventListener('click', async (e) => {
-      if(!confirm('Are you sure you want to delete ALL RSVPs permanently?')) return;
-      e.target.textContent = 'Clearing...';
+    addGuestForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      btnSubmitGuest.textContent = 'Saving...';
+      btnSubmitGuest.disabled = true;
+
+      const formData = new FormData(addGuestForm);
+      const data = {
+        name: formData.get('name'),
+        pax: parseInt(formData.get('pax')),
+        diet: formData.get('diet') || 'None',
+        familyOf: formData.get('familyOf'),
+        tableNumber: formData.get('tableNumber')
+      };
+
       try {
-        await deleteAllSangjitRsvps();
+        await adminAddSangjitRsvp(data);
+        addGuestForm.reset();
+        addGuestForm.classList.add('hidden');
+        addGuestForm.classList.remove('flex');
         await loadRsvps();
       } catch (err) {
         console.error(err);
-        alert('Failed to clear data');
+        alert('Failed to add guest');
       }
-      e.target.textContent = 'Clear All Data';
+
+      btnSubmitGuest.textContent = 'Save';
+      btnSubmitGuest.disabled = false;
     });
 
     // Debounce helper for inputs
@@ -103,12 +145,16 @@ import Layout from '../layouts/Layout.astro';
 
     async function loadRsvps() {
       try {
-        const rsvps = await getAllSangjitRsvps();
+        let rsvps = await getAllSangjitRsvps();
+        // Filter out soft-deleted items
+        rsvps = rsvps.filter(r => r.deleted !== true);
+
         let totalPax = 0;
         
         if (rsvps.length === 0) {
-          tbody.innerHTML = '<tr><td colspan="7" class="p-8 text-center text-dark/50 italic tracking-widest">No RSVPs yet.</td></tr>';
+          tbody.innerHTML = '<tr><td colspan="8" class="p-8 text-center text-dark/50 italic tracking-widest">No RSVPs yet.</td></tr>';
           seatingChartContainer.innerHTML = '<div class="p-8 text-center text-dark/50 italic tracking-widest col-span-full">No tables assigned.</div>';
+          totalPaxEl.textContent = '0';
           return;
         }
 
@@ -160,6 +206,15 @@ import Layout from '../layouts/Layout.astro';
                 ✓
               </button>
             </td>
+            <td class="p-4 text-center">
+              <button 
+                class="delete-btn w-8 h-8 rounded-full flex items-center justify-center text-red-500 hover:bg-red-50 transition-colors mx-auto"
+                data-id="${rsvp.id}"
+                title="Remove Guest"
+              >
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+              </button>
+            </td>
           `;
           tbody.appendChild(tr);
         });
@@ -206,14 +261,13 @@ import Layout from '../layouts/Layout.astro';
           });
         });
 
-        // Update Table Number (Debounced to prevent spamming DB on typing)
+        // Update Table Number
         const handleTableChange = debounce(async (e) => {
           const id = e.target.getAttribute('data-id');
           const tableNumber = e.target.value;
           e.target.style.opacity = '0.5';
           try {
             await updateSangjitRsvpAdminFields(id, { tableNumber });
-            // Reload to update seating chart
             await loadRsvps();
           } catch (err) {
             console.error(err);
@@ -226,9 +280,29 @@ import Layout from '../layouts/Layout.astro';
           input.addEventListener('input', handleTableChange);
         });
 
+        // Soft Delete
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+          btn.addEventListener('click', async (e) => {
+            if(!confirm('Are you sure you want to remove this guest?')) return;
+            const button = e.currentTarget;
+            const id = button.getAttribute('data-id');
+            
+            button.style.opacity = '0.5';
+            try {
+              // Soft delete by updating flag
+              await updateSangjitRsvpAdminFields(id, { deleted: true });
+              await loadRsvps();
+            } catch (err) {
+              console.error(err);
+              alert('Failed to remove guest');
+              button.style.opacity = '1';
+            }
+          });
+        });
+
       } catch (err) {
         console.error("Failed to load RSVPs:", err);
-        tbody.innerHTML = '<tr><td colspan="7" class="p-8 text-center text-red-500 font-bold uppercase tracking-widest">Error loading data</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="8" class="p-8 text-center text-red-500 font-bold uppercase tracking-widest">Error loading data</td></tr>';
       }
     }
 
