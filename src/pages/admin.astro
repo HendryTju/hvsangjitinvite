@@ -8,10 +8,18 @@ import Layout from '../layouts/Layout.astro';
       
       <!-- Main RSVP Table -->
       <div>
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 w-full">
           <h1 class="text-3xl md:text-5xl font-black uppercase tracking-[3px]">RSVP Admin</h1>
-          <div class="text-sm font-bold tracking-widest bg-dark text-light px-6 py-2 rounded-full">
-            Total Pax: <span id="total-pax">0</span>
+          <div class="flex flex-wrap items-center gap-4">
+            <button id="btn-add-dummy" class="text-xs font-bold uppercase tracking-widest border-2 border-dark text-dark hover:bg-dark hover:text-light transition-colors px-4 py-2 rounded-full">
+              + Add Dummy Data
+            </button>
+            <button id="btn-clear-all" class="text-xs font-bold uppercase tracking-widest border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-colors px-4 py-2 rounded-full">
+              Clear All Data
+            </button>
+            <div class="text-sm font-bold tracking-widest bg-dark text-light px-6 py-2 rounded-full">
+              Total Pax: <span id="total-pax">0</span>
+            </div>
           </div>
         </div>
 
@@ -49,11 +57,36 @@ import Layout from '../layouts/Layout.astro';
   </main>
 
   <script type="module">
-    import { getAllSangjitRsvps, toggleSangjitRsvpConfirm, updateSangjitRsvpAdminFields } from '/rsvp.js';
+    import { getAllSangjitRsvps, toggleSangjitRsvpConfirm, updateSangjitRsvpAdminFields, addSangjitDummyData, deleteAllSangjitRsvps } from '/rsvp.js';
 
     const tbody = document.getElementById('rsvp-table-body');
     const totalPaxEl = document.getElementById('total-pax');
     const seatingChartContainer = document.getElementById('seating-chart-container');
+
+    document.getElementById('btn-add-dummy').addEventListener('click', async (e) => {
+      e.target.textContent = 'Adding...';
+      try {
+        await addSangjitDummyData();
+        await loadRsvps();
+      } catch (err) {
+        console.error(err);
+        alert('Failed to add dummy data');
+      }
+      e.target.textContent = '+ Add Dummy Data';
+    });
+
+    document.getElementById('btn-clear-all').addEventListener('click', async (e) => {
+      if(!confirm('Are you sure you want to delete ALL RSVPs permanently?')) return;
+      e.target.textContent = 'Clearing...';
+      try {
+        await deleteAllSangjitRsvps();
+        await loadRsvps();
+      } catch (err) {
+        console.error(err);
+        alert('Failed to clear data');
+      }
+      e.target.textContent = 'Clear All Data';
+    });
 
     // Debounce helper for inputs
     function debounce(func, wait) {
