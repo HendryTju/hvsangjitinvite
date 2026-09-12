@@ -129,18 +129,6 @@ import Layout from '../layouts/Layout.astro';
             <input type="text" id="guest-name" name="name" required class="w-full p-4 rounded-xl bg-[#f4ebd0] border-none outline-none focus:ring-2 ring-[#e2b144] text-base placeholder-[#8c1c13]/50 font-medium" placeholder="Your Name">
           </div>
 
-          <!-- Email -->
-          <div class="flex flex-col gap-2 text-left">
-            <label class="text-xs font-bold uppercase tracking-widest text-[#f4ebd0]" for="guest-email">Email Address</label>
-            <input type="email" id="guest-email" name="email" required class="w-full p-4 rounded-xl bg-[#f4ebd0] border-none outline-none focus:ring-2 ring-[#e2b144] text-base placeholder-[#8c1c13]/50 font-medium" placeholder="hello@example.com">
-          </div>
-
-          <!-- Phone -->
-          <div class="flex flex-col gap-2 text-left">
-            <label class="text-xs font-bold uppercase tracking-widest text-[#f4ebd0]" for="guest-phone">Phone Number</label>
-            <input type="tel" id="guest-phone" name="phone" required class="w-full p-4 rounded-xl bg-[#f4ebd0] border-none outline-none focus:ring-2 ring-[#e2b144] text-base placeholder-[#8c1c13]/50 font-medium" placeholder="+62 812 3456 7890">
-          </div>
-
           <!-- Pax -->
           <div class="flex flex-col gap-2 text-left">
             <label class="text-xs font-bold uppercase tracking-widest text-[#f4ebd0]" for="guest-pax">Number of Guests</label>
@@ -149,6 +137,7 @@ import Layout from '../layouts/Layout.astro';
               <option value="2">2 Persons</option>
               <option value="3">3 Persons</option>
               <option value="4">4 Persons</option>
+              <option value="5">5 Persons</option>
             </select>
           </div>
 
@@ -199,8 +188,6 @@ import Layout from '../layouts/Layout.astro';
         const formData = new FormData(form);
         const data = {
           name: formData.get('name'),
-          email: formData.get('email'),
-          phone: formData.get('phone'),
           pax: parseInt(formData.get('pax')),
           diet: formData.get('diet')
         };
