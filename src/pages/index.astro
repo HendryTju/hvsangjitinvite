@@ -90,6 +90,50 @@ import Layout from '../layouts/Layout.astro';
             </div>
           </details>
 
+          <!-- Accordion: Dress Code -->
+          <details class="group w-full max-w-3xl border-[1.5px] border-dark rounded-[40px] overflow-hidden bg-light transition-all open:bg-red-100">
+            <summary class="flex justify-between items-center cursor-pointer p-8 md:p-10 outline-none select-none">
+              <h3 class="text-xl md:text-3xl font-black uppercase tracking-[3px]">Dress Code</h3>
+              <span class="text-3xl font-light transition-transform group-open:rotate-45">+</span>
+            </summary>
+            <div class="p-8 md:p-10 pt-0 text-left border-t-[1.5px] border-dark/10">
+              <div class="text-base md:text-xl font-medium tracking-widest space-y-4 uppercase">
+                <p class="font-black text-2xl">Color Guide</p>
+                
+                <div class="flex flex-wrap gap-6 pt-2">
+                  <div class="flex flex-col items-center gap-2">
+                    <div class="w-12 h-12 rounded-full bg-red-600 border-[1.5px] border-dark/20 shadow-sm"></div>
+                    <span class="text-[10px] font-bold opacity-70">Red</span>
+                  </div>
+                  <div class="flex flex-col items-center gap-2">
+                    <div class="w-12 h-12 rounded-full bg-[#800000] border-[1.5px] border-dark/20 shadow-sm"></div>
+                    <span class="text-[10px] font-bold opacity-70">Maroon</span>
+                  </div>
+                  <div class="flex flex-col items-center gap-2">
+                    <div class="w-12 h-12 rounded-full bg-pink-400 border-[1.5px] border-dark/20 shadow-sm"></div>
+                    <span class="text-[10px] font-bold opacity-70">Pink</span>
+                  </div>
+                  <div class="flex flex-col items-center gap-2">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-orange-400 via-yellow-400 to-rose-400 border-[1.5px] border-dark/20 shadow-sm"></div>
+                    <span class="text-[10px] font-bold opacity-70 text-center">Bright<br>Colors</span>
+                  </div>
+                </div>
+
+                <div class="pt-6 text-sm font-bold opacity-80 space-y-3 normal-case tracking-normal">
+                  <p class="flex items-start gap-3">
+                    <span class="text-red-600 font-black mt-0.5">✕</span> 
+                    <span>Avoid dark colors and white.</span>
+                  </p>
+                  <p class="flex items-start gap-3">
+                    <span class="text-green-600 font-black mt-0.5">✓</span> 
+                    <span>Suggestion: red, maroon, pink, and other bright colors.</span>
+                  </p>
+                </div>
+
+              </div>
+            </div>
+          </details>
+
         </div>
 
         <div class="mt-32 flex flex-col items-center gap-6 opacity-60">
