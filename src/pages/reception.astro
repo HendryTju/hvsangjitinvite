@@ -2,144 +2,690 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="Reception & Seating - Hendry & Valensia">
+<Layout title="Sangjit Seating - Hendry & Valensia">
   <!-- Floating Navigation -->
-  <div class="fixed top-6 right-6 lg:top-12 lg:right-12 z-50 mix-blend-difference flex gap-2">
+  <div class="fixed top-6 left-6 z-50 mix-blend-difference flex gap-2">
     <a href="/">
       <button class="rounded-full inline-flex items-center justify-center text-xs lg:text-sm uppercase tracking-widest text-primary font-black hover:bg-primary hover:text-secondary h-8 px-4 lg:h-10 lg:px-6 transition-all duration-300 border border-primary">
-        Back to Invite
+        Invite
+      </button>
+    </a>
+    <a href="/baki">
+      <button class="rounded-full inline-flex items-center justify-center text-xs lg:text-sm uppercase tracking-widest text-primary font-black hover:bg-primary hover:text-secondary h-8 px-4 lg:h-10 lg:px-6 transition-all duration-300 border border-primary">
+        Baki List
+      </button>
+    </a>
+    <a href="/admin">
+      <button class="rounded-full inline-flex items-center justify-center text-xs lg:text-sm uppercase tracking-widest text-primary font-black hover:bg-primary hover:text-secondary h-8 px-4 lg:h-10 lg:px-6 transition-all duration-300 border border-primary">
+        Admin
       </button>
     </a>
   </div>
 
-  <main class="w-full flex flex-col font-sans text-center items-center py-20 min-h-screen bg-light text-dark">
+  <main class="w-full flex flex-col font-sans py-10 min-h-screen bg-[#fbf8f1] text-dark relative selection:bg-[#7e1416] selection:text-white">
     
-    <div class="w-full px-4 md:px-8 flex flex-col items-center max-w-[1400px]">
-      <h1 class="text-4xl md:text-5xl font-black uppercase tracking-[5px] mb-6">Reception Seating</h1>
-      <p class="text-sm md:text-base tracking-widest opacity-70 uppercase mb-12">
-        Find your seat for the celebration
+    <!-- Header -->
+    <div class="w-full px-4 text-center mb-6 pt-4">
+      <h1 class="text-3xl md:text-5xl font-serif font-black uppercase tracking-[6px] text-[#7e1416] mb-2 drop-shadow-sm">Sangjit Seating</h1>
+      <p class="text-xs md:text-sm tracking-[3px] text-[#b08d29] uppercase font-semibold">
+        Hendry &amp; Valensia &bull; Reception Floor Plan &amp; Table Chart
       </p>
 
-      <!-- SEATING CHART CONTAINER -->
-      <div id="seating-chart-container" class="w-full bg-white rounded-3xl shadow-xl border border-dark/10 p-4 md:p-12 relative min-h-[600px] flex flex-col items-center gap-16 overflow-hidden">
-        
-        <!-- STAGE & STAIRS -->
-        <div class="w-full flex justify-between items-center relative z-10">
-          <div class="w-24 hidden md:block"></div> <!-- Spacer for balance -->
-          
-          <div class="w-full max-w-[500px] h-24 bg-dark text-light flex items-center justify-center rounded-t-3xl border-b-4 border-primary uppercase tracking-[5px] font-black shrink-0 relative">
-            Stage Area
-            
-            <!-- Walking path line to stairs (Right side) -->
-            <div class="hidden md:flex absolute top-1/2 left-full w-[100px] lg:w-[200px] h-[30px] border-t-4 border-r-4 border-dashed border-primary rounded-tr-3xl"></div>
-            <!-- Arrow head -->
-            <div class="hidden md:block absolute top-[calc(50%+30px)] left-[calc(100%+100px-6px)] lg:left-[calc(100%+200px-6px)] w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[10px] border-primary"></div>
-          </div>
-
-          <div class="w-24 h-24 border-2 border-dark/20 bg-gray-100 flex flex-col justify-end items-center pb-2 rounded relative shadow-inner">
-            <div class="absolute inset-0 flex flex-col">
-              <div class="flex-1 border-b border-dark/10 bg-black/5"></div>
-              <div class="flex-1 border-b border-dark/10 bg-black/10"></div>
-              <div class="flex-1 border-b border-dark/10 bg-black/15"></div>
-              <div class="flex-1 bg-black/20"></div>
-            </div>
-            <span class="z-10 text-[10px] font-black uppercase tracking-widest text-dark bg-white/80 px-2 py-1 rounded">Stairs</span>
-          </div>
+      <!-- View Switcher & Legend -->
+      <div class="mt-6 flex flex-wrap items-center justify-center gap-4">
+        <div class="inline-flex p-1 bg-white/80 backdrop-blur border border-[#7e1416]/20 rounded-xl shadow-xs">
+          <button id="view-mode-floor" class="px-5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all bg-[#7e1416] text-white shadow-xs cursor-pointer">
+            🗺️ Floor Plan
+          </button>
+          <button id="view-mode-cards" class="px-5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all text-[#7e1416] hover:bg-[#7e1416]/10 cursor-pointer">
+            📋 Table Cards View
+          </button>
         </div>
 
-        <!-- TABLES CONTAINER -->
-        <div class="w-full grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-24 lg:gap-x-16 lg:gap-y-32 pb-12 place-items-center" id="tables-container">
-          <!-- Tables will be rendered here by JS -->
+        <!-- Legend -->
+        <div class="flex items-center gap-4 text-xs font-bold uppercase tracking-wider text-dark/70 bg-white/90 px-4 py-2 rounded-xl border border-dark/15 shadow-xs">
+          <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>Hendry</div>
+          <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-yellow-400"></span>Valensia</div>
+          <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-green-500"></span>Both</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1. FLOOR PLAN VIEW WRAPPER -->
+    <div id="floor-plan-view" class="w-full max-w-[1650px] mx-auto px-4 sm:px-6 md:px-8 flex flex-col lg:flex-row gap-8 lg:gap-12 items-start relative z-10">
+      
+      <!-- SEATING CHART (Floor Map) -->
+      <div class="order-2 lg:order-1 flex-1 w-full flex flex-col items-center relative py-4">
+        
+        <!-- Floor Map Area -->
+        <div class="w-full max-w-[1150px] flex flex-col items-center relative">
+          
+          <!-- STAGE -->
+          <div class="w-72 sm:w-96 md:w-[480px] h-20 sm:h-24 bg-[#7e1416] border-[3px] md:border-4 border-[#c09d3b] rounded-lg flex flex-col items-center justify-center font-serif tracking-[5px] uppercase text-[#d4af37] mb-16 md:mb-24 relative z-10 shadow-xl shadow-[#7e1416]/15">
+            <div class="absolute inset-0 border border-[#d4af37]/25 m-1 rounded-sm pointer-events-none"></div>
+            <span class="text-2xl sm:text-3xl leading-none opacity-85 mb-0.5">囍</span>
+            <span class="text-sm sm:text-base md:text-lg font-black tracking-[5px]">STAGE AREA</span>
+          </div>
+
+          <!-- TABLES CONTAINER -->
+          <div class="flex flex-col gap-16 sm:gap-20 md:gap-28 w-full items-center z-10 mb-20" id="tables-container">
+            <!-- Row 1: 4 tables -->
+            <div class="flex justify-center gap-6 sm:gap-12 md:gap-16 lg:gap-20 w-full" id="row-1"></div>
+            <!-- Row 2: 3 tables -->
+            <div class="flex justify-center gap-6 sm:gap-12 md:gap-16 lg:gap-20 w-full" id="row-2"></div>
+          </div>
+
+          <!-- STAIRS -->
+          <div class="self-start ml-2 sm:ml-8 md:ml-12 w-44 sm:w-56 h-14 sm:h-18 border-t-2 border-l-2 border-r-2 border-[#7e1416]/25 flex divide-x-2 divide-[#7e1416]/25 bg-white/40 backdrop-blur-sm rounded-t-sm shadow-sm overflow-hidden">
+            <div class="flex-1 flex items-center justify-center text-[10px] md:text-xs tracking-widest text-[#7e1416]/60 -rotate-90 font-bold uppercase">Stair</div>
+            <div class="flex-1 bg-[#7e1416]/[0.02]"></div>
+            <div class="flex-1 bg-[#7e1416]/[0.02]"></div>
+            <div class="flex-1 bg-[#7e1416]/[0.02]"></div>
+            <div class="flex-1 bg-[#7e1416]/[0.02]"></div>
+          </div>
+
         </div>
 
       </div>
 
-      <script>
-        // Placeholder data for the tables (10 seats per table, 8 tables)
-        const generateGuests = (num) => Array.from({length: num}, (_, i) => `Guest ${i + 1}`);
+      <!-- SEARCH SIDEBAR -->
+      <div class="order-1 lg:order-2 w-full lg:w-[380px] xl:w-[420px] shrink-0 bg-white/90 backdrop-blur-md rounded-2xl shadow-xl shadow-[#7e1416]/5 border border-[#7e1416]/15 p-5 sm:p-6 flex flex-col h-[520px] lg:h-[760px] lg:sticky lg:top-8 z-30">
         
-        const seatingData = [
-          { id: 1, name: "Table 1", guests: generateGuests(10) },
-          { id: 2, name: "Table 2", guests: generateGuests(10) },
-          { id: 3, name: "Table 3", guests: generateGuests(10) },
-          { id: 4, name: "Table 4", guests: generateGuests(10) },
-          { id: 5, name: "Table 5", guests: generateGuests(10) },
-          { id: 6, name: "Table 6", guests: generateGuests(10) },
-          { id: 7, name: "Table 7", guests: generateGuests(10) },
-          { id: 8, name: "Table 8", guests: generateGuests(10) }
-        ];
+        <div class="flex items-center justify-between mb-4 border-b border-[#7e1416]/10 pb-3">
+          <div>
+            <div class="flex items-center gap-2">
+              <h2 class="text-xl font-serif font-black text-[#7e1416]">Guest Directory</h2>
+              <span id="directory-source-badge" class="text-[9px] bg-amber-100 text-amber-900 border border-amber-300 px-2 py-0.5 rounded font-black uppercase tracking-wider">Dummy Data</span>
+            </div>
+            <p class="text-xs text-[#b08d29] tracking-wider uppercase font-semibold">Hover to locate seats</p>
+          </div>
+          <span class="text-xl text-[#7e1416]/30 font-serif">囍</span>
+        </div>
+        
+        <!-- Search Input -->
+        <div class="relative mb-4">
+          <input 
+            type="text" 
+            id="search-input" 
+            placeholder="Search family or guest name..." 
+            class="w-full border border-[#7e1416]/20 focus:border-[#7e1416] rounded-xl px-4 py-2.5 text-sm bg-[#fbf8f1]/80 text-dark placeholder:text-dark/40 focus:outline-none transition-all shadow-inner" 
+            autocomplete="off" 
+          />
+          <svg class="absolute right-3.5 top-2.5 w-4 h-4 text-[#7e1416]/40 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+        </div>
 
-        const container = document.getElementById('tables-container');
+        <!-- Family List -->
+        <div id="search-results" class="flex-1 overflow-y-auto flex flex-col gap-2.5 pr-1.5 custom-scrollbar">
+          <!-- Populated by JavaScript -->
+        </div>
 
-        // Render each round table
-        seatingData.forEach(table => {
-          const tableWrapper = document.createElement('div');
-          tableWrapper.className = "relative w-48 h-48 md:w-64 md:h-64 rounded-full border-4 border-dark/20 flex flex-col items-center justify-center bg-light/50 transition-transform hover:scale-105 cursor-pointer group";
+      </div>
+
+    </div>
+
+    <!-- 2. TABLE CARDS VIEW WRAPPER (Direct from Admin Seating Chart Data) -->
+    <div id="table-cards-view" class="hidden w-full max-w-[1400px] mx-auto px-4 sm:px-6 md:px-8 flex-col gap-8 relative z-10 py-6">
+      
+      <div class="flex items-center justify-between border-b-2 border-dark/20 pb-4">
+        <div>
+          <h2 class="text-2xl md:text-3xl font-black uppercase tracking-[3px] text-dark">Seating Chart Data</h2>
+          <p class="text-xs font-semibold text-dark/60 uppercase tracking-widest mt-1">Directly synced from guest reservations</p>
+        </div>
+        <div class="text-xs font-bold uppercase tracking-wider bg-dark text-light px-4 py-2 rounded-full">
+          Total Tables: <span id="cards-table-count">8</span>
+        </div>
+      </div>
+
+      <div id="cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <!-- Rendered dynamically matching user's screenshot -->
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script is:inline type="module">
+    import { getAllSangjitRsvps, HENDRY_DUMMY_RSVPS } from '/rsvp.js';
+
+    // 1. Data Store
+    let allRsvps = [];
+    let tablesData = []; // for floor plan
+    let tablesMap = {};  // for cards view: tableNumber -> array of rsvps
+    let allGuestsFlat = [];
+    let allPartiesFlat = [];
+
+    const row1 = document.getElementById('row-1');
+    const row2 = document.getElementById('row-2');
+    const searchInput = document.getElementById('search-input');
+    const searchResults = document.getElementById('search-results');
+    const cardsGrid = document.getElementById('cards-grid');
+    const cardsTableCount = document.getElementById('cards-table-count');
+
+    const viewFloorBtn = document.getElementById('view-mode-floor');
+    const viewCardsBtn = document.getElementById('view-mode-cards');
+    const floorPlanView = document.getElementById('floor-plan-view');
+    const tableCardsView = document.getElementById('table-cards-view');
+
+    // Switch View Handling
+    let activeView = 'floor'; // 'floor' | 'cards'
+    viewFloorBtn.addEventListener('click', () => {
+      activeView = 'floor';
+      viewFloorBtn.className = "px-5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all bg-[#7e1416] text-white shadow-xs cursor-pointer";
+      viewCardsBtn.className = "px-5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all text-[#7e1416] hover:bg-[#7e1416]/10 cursor-pointer";
+      floorPlanView.classList.remove('hidden');
+      floorPlanView.classList.add('flex');
+      tableCardsView.classList.add('hidden');
+      tableCardsView.classList.remove('flex');
+    });
+
+    viewCardsBtn.addEventListener('click', () => {
+      activeView = 'cards';
+      viewCardsBtn.className = "px-5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all bg-[#7e1416] text-white shadow-xs cursor-pointer";
+      viewFloorBtn.className = "px-5 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all text-[#7e1416] hover:bg-[#7e1416]/10 cursor-pointer";
+      floorPlanView.classList.add('hidden');
+      floorPlanView.classList.remove('flex');
+      tableCardsView.classList.remove('hidden');
+      tableCardsView.classList.add('flex');
+      renderTableCards();
+    });
+
+    // State for Map interactions
+    let selectedFamily = null;
+    let selectedRsvpId = null;
+    let hoveredFamily = null; 
+    let hoveredRsvpId = null;
+
+    const triggerMapRender = () => {
+      renderMap();
+    };
+
+    // 2. Fetch and Prepare Data
+    async function loadData() {
+      try {
+        let rsvps = await getAllSangjitRsvps();
+        rsvps = rsvps.filter(r => r.deleted !== true);
+
+        // If DB has no table assignments, fallback to HENDRY_DUMMY_RSVPS + default tables 5-8
+        const hasAssigned = rsvps.some(r => r.tableNumber);
+        if (!hasAssigned) {
+          const defaultDummyList = [
+            ...HENDRY_DUMMY_RSVPS,
+            { name: "Richard Bong & Kel", pax: 4, familyGroup: "Keluarga Papa (Valensia)", familyOf: "Valensia", tableNumber: "5", isDummy: true },
+            { name: "Anthony Bong & Kel", pax: 4, familyGroup: "Keluarga Papa (Valensia)", familyOf: "Valensia", tableNumber: "5", isDummy: true },
+            { name: "Liauw Su San & Kel", pax: 5, familyGroup: "Keluarga Mama (Valensia)", familyOf: "Valensia", tableNumber: "6", isDummy: true },
+            { name: "Calvin Liauw & Kel", pax: 4, familyGroup: "Keluarga Mama (Valensia)", familyOf: "Valensia", tableNumber: "6", isDummy: true },
+            { name: "Best Friends Hendry", pax: 5, familyGroup: "Teman & Sahabat", familyOf: "Hendry", tableNumber: "7", isDummy: true },
+            { name: "Best Friends Valensia", pax: 5, familyGroup: "Teman & Sahabat", familyOf: "Valensia", tableNumber: "7", isDummy: true },
+            { name: "VIP Colleagues", pax: 4, familyGroup: "Kolega & Tamu VIP", familyOf: "Both", tableNumber: "8", isDummy: true },
+            { name: "Special Guests", pax: 4, familyGroup: "Kolega & Tamu VIP", familyOf: "Both", tableNumber: "8", isDummy: true }
+          ];
+          rsvps = defaultDummyList.map((item, idx) => ({
+            id: `dummy_${idx + 1}`,
+            name: item.name,
+            pax: item.pax,
+            diet: 'None',
+            familyOf: item.familyOf,
+            familyGroup: item.familyGroup,
+            tableNumber: item.tableNumber,
+            confirmed: true,
+            isDummy: true
+          }));
+        }
+
+        allRsvps = rsvps;
+        processTablesData(rsvps);
+        renderMap();
+        renderSearchResults();
+        renderTableCards();
+      } catch (err) {
+        console.error("Error loading seating data:", err);
+      }
+    }
+
+    function processTablesData(rsvps) {
+      tablesMap = {};
+      
+      // Initialize 8 tables
+      for(let t = 1; t <= 8; t++) {
+        tablesMap[String(t)] = [];
+      }
+
+      rsvps.forEach(r => {
+        if (r.tableNumber) {
+          const tKey = String(r.tableNumber);
+          if (!tablesMap[tKey]) tablesMap[tKey] = [];
+          tablesMap[tKey].push(r);
+        }
+      });
+
+      // Construct 8 tables array for Floor Plan
+      tablesData = [];
+      allGuestsFlat = [];
+      allPartiesFlat = [];
+      let guestGlobalId = 1;
+
+      for(let t = 1; t <= 8; t++) {
+        const tKey = String(t);
+        const rsvpsAtTable = tablesMap[tKey] || [];
+        const row = t <= 4 ? 1 : 2;
+        
+        let primaryFamily = `Table ${t}`;
+        if (rsvpsAtTable.length > 0) {
+          const first = rsvpsAtTable[0];
+          primaryFamily = first.familyGroup || (first.familyOf ? `Keluarga ${first.familyOf}` : `Table ${t}`);
+        }
+
+        let seats = [];
+        let currentSeat = 1;
+
+        rsvpsAtTable.forEach(r => {
+          const pax = parseInt(r.pax || 1);
+          const assignedSeats = [];
           
-          const title = document.createElement('h3');
-          title.className = "font-serif text-xl md:text-2xl font-bold text-dark group-hover:text-primary transition-colors text-center px-4";
-          title.textContent = table.name;
-          tableWrapper.appendChild(title);
+          for(let p = 1; p <= pax && currentSeat <= 10; p++) {
+            const seatNumber = currentSeat++;
+            assignedSeats.push(seatNumber);
+          }
 
-          // Calculate positions for 10 seats in a circle
-          const radius = window.innerWidth < 768 ? 110 : 140; // distance from center to seat
-          const totalSeats = 10;
-          
-          table.guests.forEach((guest, index) => {
-            const angle = (index * (360 / totalSeats)) - 90; // -90 to start at top
-            const radians = angle * (Math.PI / 180);
-            
-            const seat = document.createElement('div');
-            // Tooltip group
-            seat.className = "absolute w-8 h-8 md:w-10 md:h-10 bg-primary/20 rounded-full border-2 border-primary flex items-center justify-center shadow-sm hover:bg-primary hover:text-light transition-colors group/seat z-10";
-            
-            // Calculate absolute position based on center being 50%,50%
-            // In CSS, 50% + cos(rad)*radius
-            const cx = `calc(50% + ${Math.cos(radians) * radius}px)`;
-            const cy = `calc(50% + ${Math.sin(radians) * radius}px)`;
-            
-            seat.style.left = cx;
-            seat.style.top = cy;
-            seat.style.transform = "translate(-50%, -50%)"; // Center the seat dot on the calculated point
+          let seatLabel = '';
+          if (assignedSeats.length === 1) {
+            seatLabel = `Seat ${assignedSeats[0]}`;
+          } else if (assignedSeats.length > 1) {
+            seatLabel = `Seats ${assignedSeats[0]}-${assignedSeats[assignedSeats.length - 1]}`;
+          }
 
-            // Seat Number (optional) or icon
-            const seatLabel = document.createElement('span');
-            seatLabel.className = "text-[10px] md:text-xs font-black";
-            seatLabel.textContent = index + 1;
-            seat.appendChild(seatLabel);
+          const famName = r.familyGroup || (r.familyOf ? `Keluarga ${r.familyOf}` : `Table ${t}`);
 
-            // Tooltip for guest name
-            const tooltip = document.createElement('div');
-            tooltip.className = "absolute opacity-0 pointer-events-none group-hover/seat:opacity-100 bg-dark text-light text-xs py-1 px-3 rounded whitespace-nowrap z-50 transition-opacity";
-            // Position tooltip outside the circle based on angle
-            if (angle > -45 && angle < 45) { // Right side
-              tooltip.style.left = "calc(100% + 10px)";
-              tooltip.style.top = "50%";
-              tooltip.style.transform = "translateY(-50%)";
-            } else if (angle > 135 || angle < -135) { // Left side
-              tooltip.style.right = "calc(100% + 10px)";
-              tooltip.style.top = "50%";
-              tooltip.style.transform = "translateY(-50%)";
-            } else if (angle >= 45 && angle <= 135) { // Bottom
-              tooltip.style.top = "calc(100% + 10px)";
-              tooltip.style.left = "50%";
-              tooltip.style.transform = "translateX(-50%)";
-            } else { // Top
-              tooltip.style.bottom = "calc(100% + 10px)";
-              tooltip.style.left = "50%";
-              tooltip.style.transform = "translateX(-50%)";
-            }
-            tooltip.textContent = guest;
-            seat.appendChild(tooltip);
-
-            tableWrapper.appendChild(seat);
+          // Register Party entry for Directory (combined 1 line per RSVP)
+          allPartiesFlat.push({
+            id: r.id,
+            name: r.name,
+            pax: pax,
+            displayName: `${r.name} (${pax})`,
+            family: famName,
+            familyOf: r.familyOf || 'Hendry',
+            diet: r.diet,
+            confirmed: r.confirmed !== false,
+            tableId: t,
+            seatNumbers: assignedSeats,
+            seatLabel: seatLabel,
+            isDummy: r.isDummy || false
           });
 
-          container.appendChild(tableWrapper);
+          // Register individual physical seats on the table with rsvpId link
+          assignedSeats.forEach(seatNum => {
+            const guestObj = {
+              id: guestGlobalId++,
+              rsvpId: r.id,
+              name: `${r.name} (${pax})`,
+              rawName: r.name,
+              pax: pax,
+              family: famName,
+              familyOf: r.familyOf || 'Hendry',
+              diet: r.diet,
+              confirmed: r.confirmed !== false,
+              tableId: t,
+              seatNum: seatNum,
+              seatLabel: seatLabel,
+              isDummy: r.isDummy || false
+            };
+            seats.push(guestObj);
+            allGuestsFlat.push(guestObj);
+          });
         });
-      </script>
+
+        // Fill remaining open seats
+        while (currentSeat <= 10) {
+          seats.push({
+            id: guestGlobalId++,
+            rsvpId: null,
+            name: `Available Seat ${currentSeat}`,
+            rawName: 'Available',
+            family: primaryFamily,
+            familyOf: 'Both',
+            confirmed: false,
+            tableId: t,
+            seatNum: currentSeat++,
+            isOpen: true
+          });
+        }
+
+        tablesData.push({
+          id: t,
+          name: `${t}`,
+          row,
+          family: primaryFamily,
+          guests: seats,
+          confirmedPax: rsvpsAtTable.reduce((acc, curr) => acc + (curr.confirmed ? parseInt(curr.pax || 0) : 0), 0)
+        });
+      }
+    }
+
+    // 3. Render Floor Plan
+    const renderMap = () => {
+      row1.innerHTML = '';
+      row2.innerHTML = '';
+
+      tablesData.forEach(table => {
+        const isTableHighlighted = (selectedFamily === table.family) || (hoveredFamily === table.family);
+
+        const tableWrapper = document.createElement('div');
+        
+        tableWrapper.className = `relative w-22 h-22 sm:w-28 sm:h-28 md:w-32 md:h-32 lg:w-36 lg:h-36 rounded-full border-[3px] md:border-4 flex flex-col items-center justify-center transition-all duration-300 group z-10 shadow-md cursor-pointer ${
+          isTableHighlighted 
+          ? 'bg-[#8c181a] border-yellow-400 shadow-[0_0_35px_rgba(250,204,21,0.6)] scale-110 ring-2 ring-yellow-400/50' 
+          : 'bg-[#7e1416] border-[#c09d3b] hover:border-yellow-400'
+        }`;
+
+        tableWrapper.onclick = () => {
+          selectedFamily = table.family;
+          selectedRsvpId = null;
+          renderSearchResults();
+          triggerMapRender();
+        };
+        
+        const innerRing = document.createElement('div');
+        innerRing.className = `absolute inset-0 rounded-full border border-[#c09d3b]/35 m-1 pointer-events-none`;
+        tableWrapper.appendChild(innerRing);
+
+        const numberLabel = document.createElement('span');
+        numberLabel.className = `font-serif text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight transition-colors z-10 ${
+          isTableHighlighted ? 'text-yellow-300 drop-shadow' : 'text-[#d4af37]'
+        }`;
+        numberLabel.textContent = table.name;
+        tableWrapper.appendChild(numberLabel);
+
+        const caption = document.createElement('span');
+        caption.className = `text-[8px] sm:text-[9px] md:text-[10px] tracking-[2px] uppercase opacity-75 z-10 -mt-0.5 ${
+          isTableHighlighted ? 'text-yellow-200' : 'text-[#d4af37]'
+        }`;
+        caption.textContent = 'TABLE';
+        tableWrapper.appendChild(caption);
+
+        const radius = window.innerWidth < 640 ? 62 : (window.innerWidth < 768 ? 78 : 92);
+        const totalSeats = 10;
+        
+        table.guests.forEach((guest, index) => {
+          const angle = (index * (360 / totalSeats)) - 90;
+          const radians = angle * (Math.PI / 180);
+          
+          // Check if this seat's RSVP is highlighted
+          const isSeatHighlighted = (selectedRsvpId && guest.rsvpId === selectedRsvpId) || (hoveredRsvpId && guest.rsvpId === hoveredRsvpId);
+          const isFamilyHighlighted = (selectedFamily === guest.family && !selectedRsvpId) || (hoveredFamily === guest.family && !hoveredRsvpId);
+          
+          const seatWrapper = document.createElement('div');
+          seatWrapper.className = "absolute z-0 group/seat flex items-center justify-center cursor-pointer";
+          
+          const cx = `calc(50% + ${Math.cos(radians) * radius}px)`;
+          const cy = `calc(50% + ${Math.sin(radians) * radius}px)`;
+          
+          seatWrapper.style.left = cx;
+          seatWrapper.style.top = cy;
+          seatWrapper.style.transform = "translate(-50%, -50%)";
+
+          // Chair Graphic
+          const chairGraphic = document.createElement('div');
+          
+          let chairBgClass = 'bg-white border-[#7e1416]/25';
+          if (guest.isOpen) {
+            chairBgClass = 'bg-white/40 border-dashed border-dark/20';
+          } else if (isSeatHighlighted) {
+            chairBgClass = 'bg-yellow-400 border-[2px] border-[#c09d3b] scale-135 z-20 shadow-[0_0_15px_rgba(250,204,21,0.9)] ring-2 ring-yellow-400';
+          } else if (isFamilyHighlighted) {
+            chairBgClass = 'bg-yellow-100 border-[1.5px] border-[#c09d3b] scale-115 z-20 shadow-[0_0_8px_rgba(250,204,21,0.5)]';
+          }
+
+          chairGraphic.className = `w-3.5 h-5 sm:w-4 sm:h-5.5 md:w-5 md:h-7 rounded-t-[7px] rounded-b-[2px] transition-all duration-300 shadow-sm border-[1px] md:border-[1.5px] ${chairBgClass}`;
+          chairGraphic.style.transform = `rotate(${angle + 270}deg)`;
+          
+          // Tooltip
+          const tooltip = document.createElement('div');
+          tooltip.className = "absolute opacity-0 pointer-events-none group-hover/seat:opacity-100 bg-[#7e1416] text-[#fbf8f1] border border-[#c09d3b] text-[10px] md:text-xs py-1 px-2.5 rounded-md whitespace-nowrap z-50 transition-opacity shadow-lg -translate-x-1/2 -translate-y-full -top-2.5 left-1/2 font-medium tracking-wide";
+          
+          const dietBadge = guest.diet && guest.diet.toLowerCase() !== 'none' 
+            ? `<span class="block text-orange-300 text-[8px] font-bold uppercase">Diet: ${guest.diet}</span>` 
+            : '';
+          const dummyTag = guest.isDummy ? `<span class="text-amber-300 font-bold ml-1 text-[8px] tracking-wider">[DUMMY]</span>` : '';
+          
+          tooltip.innerHTML = `
+            <span class="opacity-75 text-[8px] block">${guest.family}</span>
+            <span>${guest.name}${dummyTag}</span>
+            <span class="text-[9px] text-[#d4af37] block mt-0.5">${guest.seatLabel || `Seat ${guest.seatNum}`}</span>
+            ${dietBadge}
+          `;
+          
+          seatWrapper.onmouseenter = () => {
+            if (!guest.isOpen && guest.rsvpId) {
+              hoveredRsvpId = guest.rsvpId;
+              triggerMapRender();
+            }
+          };
+          seatWrapper.onmouseleave = () => {
+            if (!guest.isOpen && guest.rsvpId) {
+              hoveredRsvpId = null;
+              triggerMapRender();
+            }
+          };
+
+          seatWrapper.onclick = (e) => {
+            e.stopPropagation();
+            if (!guest.isOpen && guest.rsvpId) {
+              selectedRsvpId = (selectedRsvpId === guest.rsvpId ? null : guest.rsvpId);
+              selectedFamily = guest.family;
+              renderSearchResults();
+              triggerMapRender();
+            }
+          };
+
+          seatWrapper.appendChild(chairGraphic);
+          seatWrapper.appendChild(tooltip);
+          tableWrapper.appendChild(seatWrapper);
+        });
+
+        if (table.row === 1) {
+          row1.appendChild(tableWrapper);
+        } else {
+          row2.appendChild(tableWrapper);
+        }
+      });
+    };
+
+    // 4. Render Guest Directory (Sidebar) - 1 line per RSVP Party
+    const renderSearchResults = (query = '') => {
+      searchResults.innerHTML = '';
+      const lowerQ = query.toLowerCase().trim();
       
-    </div>
-    
-  </main>
+      const familyGroups = {};
+      allPartiesFlat.forEach(party => {
+        if(!familyGroups[party.family]) familyGroups[party.family] = [];
+        familyGroups[party.family].push(party);
+      });
+
+      let familiesToRender = Object.keys(familyGroups);
+      if (lowerQ) {
+        familiesToRender = familiesToRender.filter(famName => {
+          return famName.toLowerCase().includes(lowerQ) || familyGroups[famName].some(p => p.name.toLowerCase().includes(lowerQ));
+        });
+      }
+
+      if(familiesToRender.length === 0) {
+        searchResults.innerHTML = '<div class="text-xs text-dark/40 text-center mt-10 font-medium">No guests or families found.</div>';
+        return;
+      }
+
+      familiesToRender.forEach(famName => {
+        const famParties = familyGroups[famName];
+        const famTotalPax = famParties.reduce((sum, p) => sum + p.pax, 0);
+        const tableNum = famParties[0]?.tableId;
+
+        const famCard = document.createElement('div');
+        famCard.className = `p-3.5 rounded-xl border transition-all cursor-pointer shadow-xs ${
+          (selectedFamily === famName && !selectedRsvpId) 
+          ? 'border-[#7e1416] bg-[#7e1416]/5 ring-1 ring-[#7e1416]' 
+          : 'border-[#7e1416]/10 bg-white/70 hover:border-[#7e1416]/30 hover:bg-white hover:shadow-sm'
+        }`;
+        
+        famCard.onmouseenter = () => { hoveredFamily = famName; triggerMapRender(); };
+        famCard.onmouseleave = () => { hoveredFamily = null; triggerMapRender(); };
+
+        famCard.onclick = () => {
+          if(selectedFamily === famName && !selectedRsvpId) {
+            selectedFamily = null;
+            selectedRsvpId = null;
+          } else {
+            selectedFamily = famName;
+            selectedRsvpId = null; 
+          }
+          renderSearchResults(query);
+          triggerMapRender();
+        };
+
+        const famHeader = document.createElement('div');
+        famHeader.className = "flex justify-between items-center mb-2";
+        famHeader.innerHTML = `
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="font-bold text-[#7e1416] font-serif text-base block">${famName}</span>
+              <span class="text-[8px] bg-amber-100 text-amber-900 border border-amber-300 px-1.5 py-0.2 rounded font-black uppercase tracking-wider">Dummy</span>
+            </div>
+            <span class="text-[10px] text-[#b08d29] font-medium tracking-wide">Table ${tableNum}</span>
+          </div>
+          <span class="text-[10px] bg-[#7e1416] text-[#fbf8f1] px-2 py-0.5 rounded-full font-bold shadow-xs tracking-wider uppercase">${famTotalPax} pax</span>
+        `;
+        famCard.appendChild(famHeader);
+
+        // List each RSVP party: e.g. "Tju Djin Tjhong (2)"
+        const guestList = document.createElement('div');
+        guestList.className = "flex flex-col gap-1 border-t border-[#7e1416]/5 pt-2";
+        
+        famParties.forEach(party => {
+          const isMatch = lowerQ && party.name.toLowerCase().includes(lowerQ);
+          
+          const gRow = document.createElement('div');
+          gRow.className = `text-xs flex justify-between items-center px-2 py-1.5 rounded-md transition-colors cursor-pointer ${
+            selectedRsvpId === party.id 
+            ? 'bg-yellow-400/40 font-bold border border-yellow-500/40 shadow-xs' 
+            : (isMatch ? 'bg-[#7e1416]/10 font-medium' : 'hover:bg-[#7e1416]/5')
+          }`;
+          gRow.innerHTML = `
+            <div class="flex items-center gap-1.5">
+              <span class="text-dark/90 font-medium">${party.name} (${party.pax})</span>
+              ${party.isDummy ? '<span class="text-[8px] text-amber-700 bg-amber-50 border border-amber-200 px-1 py-0.2 rounded font-bold uppercase">Dummy</span>' : ''}
+            </div>
+            <span class="text-[10px] font-mono text-dark/50">${party.seatLabel}</span>
+          `;
+          
+          gRow.onmouseenter = () => { hoveredRsvpId = party.id; triggerMapRender(); };
+          gRow.onmouseleave = () => { hoveredRsvpId = null; triggerMapRender(); };
+
+          gRow.onclick = (e) => {
+            e.stopPropagation(); 
+            selectedFamily = famName;
+            selectedRsvpId = (selectedRsvpId === party.id ? null : party.id);
+            renderSearchResults(query);
+            triggerMapRender();
+          };
+          guestList.appendChild(gRow);
+        });
+
+        famCard.appendChild(guestList);
+        searchResults.appendChild(famCard);
+      });
+    };
+
+    // 5. Render Seating Chart Cards (Matching User's Screenshot Exactly)
+    const renderTableCards = () => {
+      cardsGrid.innerHTML = '';
+      const tableKeys = Object.keys(tablesMap).sort((a, b) => parseInt(a) - parseInt(b));
+      cardsTableCount.textContent = tableKeys.length;
+
+      tableKeys.forEach(tableNum => {
+        const guests = tablesMap[tableNum] || [];
+        let tableConfirmedPax = 0;
+
+        const guestListHtml = guests.length === 0 
+          ? '<div class="text-xs text-dark/40 italic py-4 text-center">No guests assigned yet</div>'
+          : guests.map(g => {
+              if (g.confirmed) {
+                tableConfirmedPax += parseInt(g.pax || 0);
+              }
+
+              const textClass = g.confirmed ? 'text-dark' : 'text-red-500 opacity-80';
+              const badgeClass = g.confirmed ? 'bg-dark text-light' : 'bg-red-500 text-white';
+
+              const hasDiet = g.diet && g.diet.toLowerCase() !== 'none' && g.diet.trim() !== '';
+              const dietText = hasDiet
+                ? `<div class="text-[10px] uppercase font-bold tracking-widest text-orange-600 mt-1 ml-4 border-l-2 border-orange-600 pl-2">Diet: ${g.diet}</div>`
+                : '';
+
+              let dotColorClass = 'bg-gray-300';
+              if (g.familyOf === 'Hendry') dotColorClass = 'bg-blue-500';
+              else if (g.familyOf === 'Valensia') dotColorClass = 'bg-yellow-400';
+              else if (g.familyOf === 'Both') dotColorClass = 'bg-green-500';
+
+              const dummyTag = g.isDummy
+                ? '<span class="text-[9px] bg-amber-100 text-amber-800 border border-amber-300 px-1 py-0.2 rounded font-black uppercase tracking-wider ml-1">Dummy</span>'
+                : '';
+
+              return `
+                <div class="py-3 border-b border-dark/10 last:border-0 text-sm ${textClass}">
+                  <div class="flex justify-between items-start">
+                    <div class="flex items-center gap-2">
+                      <span class="w-2.5 h-2.5 rounded-full ${dotColorClass} flex-shrink-0 shadow-sm" title="Family of ${g.familyOf || 'Unknown'}"></span>
+                      <span class="font-bold capitalize leading-none pt-0.5">${g.name}${dummyTag}</span>
+                    </div>
+                    <span class="text-xs px-2 py-1 rounded-full font-black leading-none ${badgeClass}">${g.pax} pax</span>
+                  </div>
+                  ${dietText}
+                </div>
+              `;
+            }).join('');
+
+        const card = document.createElement('div');
+        card.className = 'border-2 border-dark rounded-xl bg-white p-6 flex flex-col h-full shadow-[4px_4px_0px_rgba(28,25,23,1)]';
+        card.innerHTML = `
+          <div class="flex justify-between items-center mb-4 pb-4 border-b-2 border-dark">
+            <h3 class="text-xl font-black uppercase tracking-widest">Table ${tableNum}</h3>
+            <span class="text-xs font-bold uppercase tracking-wider text-dark/70">${tableConfirmedPax} Confirmed</span>
+          </div>
+          <div class="flex flex-col gap-1 flex-1">
+            ${guestListHtml}
+          </div>
+        `;
+        cardsGrid.appendChild(card);
+      });
+    };
+
+    searchInput.addEventListener('input', (e) => {
+      renderSearchResults(e.target.value);
+    });
+
+    window.addEventListener('resize', () => {
+      triggerMapRender();
+    });
+
+    // Start loading data
+    loadData();
+
+  </script>
+
+  <style>
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(126, 20, 22, 0.2);
+      border-radius: 8px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(126, 20, 22, 0.4);
+    }
+  </style>
+  
 </Layout>

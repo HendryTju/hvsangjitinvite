@@ -1,0 +1,350 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Daftar Baki Sangjit - Hendry & Valensia">
+  <!-- Floating Navigation -->
+  <div class="fixed top-6 left-6 z-50 mix-blend-difference flex gap-2">
+    <a href="/">
+      <button class="rounded-full inline-flex items-center justify-center text-xs lg:text-sm uppercase tracking-widest text-primary font-black hover:bg-primary hover:text-secondary h-8 px-4 lg:h-10 lg:px-6 transition-all duration-300 border border-primary">
+        Invite
+      </button>
+    </a>
+    <a href="/reception">
+      <button class="rounded-full inline-flex items-center justify-center text-xs lg:text-sm uppercase tracking-widest text-primary font-black hover:bg-primary hover:text-secondary h-8 px-4 lg:h-10 lg:px-6 transition-all duration-300 border border-primary">
+        Seating
+      </button>
+    </a>
+  </div>
+
+  <main class="w-full flex flex-col font-sans py-12 min-h-screen bg-[#fbf8f1] text-dark relative selection:bg-[#7e1416] selection:text-white">
+    
+    <!-- Header -->
+    <div class="w-full px-4 text-center mb-8 pt-4">
+      <div class="inline-flex items-center gap-2 text-xs font-bold tracking-[3px] uppercase text-[#b08d29] mb-2">
+        <span>囍</span>
+        <span>Prosesi Penyerahan Baki</span>
+        <span>囍</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-serif font-black uppercase tracking-[4px] text-[#7e1416] mb-2">
+        Daftar Baki Sangjit
+      </h1>
+      <p class="text-xs sm:text-sm tracking-[2px] text-dark/60 uppercase font-medium">
+        Hendry &amp; Valensia &bull; Urutan Pasangan Penyerah &amp; Penerima
+      </p>
+    </div>
+
+    <!-- Main Container -->
+    <div class="w-full max-w-[1200px] mx-auto px-4 sm:px-6 md:px-8 flex flex-col gap-6 relative z-10">
+      
+      <!-- Quick Search & Stats Bar -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4 bg-white/80 backdrop-blur-md p-4 rounded-xl border border-[#7e1416]/15 shadow-xs">
+        
+        <!-- Search Input -->
+        <div class="relative w-full sm:w-80">
+          <input 
+            type="text" 
+            id="table-search" 
+            placeholder="Cari nama pasangan atau isi baki..." 
+            class="w-full border border-[#7e1416]/20 focus:border-[#7e1416] rounded-lg pl-9 pr-4 py-2 text-xs sm:text-sm bg-[#fbf8f1] text-dark placeholder:text-dark/40 focus:outline-none transition-all shadow-inner" 
+            autocomplete="off" 
+          />
+          <svg class="absolute left-3 top-2.5 w-4 h-4 text-[#7e1416]/50 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+        </div>
+
+        <!-- Progress Counter -->
+        <div class="flex items-center gap-3 self-end sm:self-center">
+          <span class="text-xs font-medium text-dark/60" id="progress-text">Progres: 0 / 8 Baki Selesai</span>
+          <button id="reset-checklist" class="text-[11px] text-[#7e1416] hover:underline font-semibold cursor-pointer">
+            Reset Checklist
+          </button>
+        </div>
+
+      </div>
+
+      <!-- DIRECT TABLE -->
+      <div class="w-full bg-white rounded-2xl border border-[#7e1416]/15 shadow-md overflow-hidden overflow-x-auto custom-scrollbar">
+        <table class="w-full text-left border-collapse min-w-[700px]">
+          
+          <!-- Table Header -->
+          <thead>
+            <tr class="bg-[#7e1416] text-[#fbf8f1] border-b-2 border-[#c09d3b]">
+              <th class="py-3.5 px-4 text-center font-serif text-sm tracking-widest uppercase w-16">
+                No
+              </th>
+              <th class="py-3.5 px-5 font-serif text-sm tracking-wider uppercase w-64">
+                Baki / Nampan
+              </th>
+              <th class="py-3.5 px-5 font-serif text-sm tracking-wider uppercase border-l border-[#c09d3b]/30">
+                <div class="flex items-center justify-between">
+                  <span>Penyerah (Pihak Hendry)</span>
+                  <span class="text-[10px] bg-[#fbf8f1]/15 px-2 py-0.5 rounded text-[#d4af37] font-sans">Groom</span>
+                </div>
+              </th>
+              <th class="py-3.5 px-5 font-serif text-sm tracking-wider uppercase border-l border-[#c09d3b]/30">
+                <div class="flex items-center justify-between">
+                  <span>Penerima (Pihak Valensia)</span>
+                  <span class="text-[10px] bg-[#fbf8f1]/15 px-2 py-0.5 rounded text-[#d4af37] font-sans">Bride</span>
+                </div>
+              </th>
+              <th class="py-3.5 px-4 text-center font-serif text-sm tracking-widest uppercase w-20 border-l border-[#c09d3b]/30">
+                Cek
+              </th>
+            </tr>
+          </thead>
+
+          <!-- Table Body -->
+          <tbody id="baki-table-body" class="divide-y divide-[#7e1416]/10 text-xs sm:text-sm">
+            <!-- Dynamically populated rows -->
+          </tbody>
+
+        </table>
+      </div>
+
+      <!-- Quick MC / WO Notes Footer -->
+      <div class="bg-white/60 rounded-xl p-4 border border-[#7e1416]/10 text-xs text-dark/70 flex flex-col sm:flex-row justify-between items-center gap-2">
+        <div class="flex items-center gap-2">
+          <span class="text-[#7e1416] font-bold">Catatan MC:</span>
+          <span>Baki diserahkan berpasangan sesuai nomor urut 1 sampai 8 saat prosesi masuk.</span>
+        </div>
+        <div class="flex items-center gap-4 text-[#7e1416] font-medium">
+          <span>Total: 8 Nampan</span>
+          <span>&bull;</span>
+          <span>16 Pasangan Kehormatan</span>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    const bakiList = [
+      {
+        no: 1,
+        title: "Perhiasan & Mas Kawin",
+        desc: "Kalung, gelang, cincin & mas kawin",
+        giver: "Kevin Tju & Jessica Halim",
+        giverRel: "Kakak Kandung Hendry & Ipar",
+        receiver: "Richard Bong & Linda Setiawan",
+        receiverRel: "Om & Tante Valensia (Pihak Papa)"
+      },
+      {
+        no: 2,
+        title: "Kain & Pakaian Pengantin",
+        desc: "Bahan busana & cheongsam",
+        giver: "David Tju & Michelle Tan",
+        giverRel: "Sepupu Hendry",
+        receiver: "Anthony Bong & Felicia Lim",
+        receiverRel: "Sepupu Valensia"
+      },
+      {
+        no: 3,
+        title: "Kosmetik & Perawatan",
+        desc: "Skincare & set riasan pengantin",
+        giver: "Edwin Susanto & Cindy Wijaya",
+        giverRel: "Sahabat Dekat Hendry",
+        receiver: "Calvin Liauw & Stefanie Chen",
+        receiverRel: "Sepupu Valensia (Pihak Mama)"
+      },
+      {
+        no: 4,
+        title: "Buah Buahan Kemakmuran",
+        desc: "Apel merah & jeruk keprok manis",
+        giver: "Michael Tju & Vanessa Laurent",
+        giverRel: "Sepupu Hendry",
+        receiver: "Steven Lie & Amanda Kusuma",
+        receiverRel: "Kakak Sepupu Valensia"
+      },
+      {
+        no: 5,
+        title: "Kue Tradisional Sangjit",
+        desc: "Kue mangkok, satu, & manisan",
+        giver: "Ryan Prasetya & Christine Natalia",
+        giverRel: "Sahabat Keluarga Hendry",
+        receiver: "Dennis Gunawan & Patricia Hartono",
+        receiverRel: "Sahabat Dekat Valensia"
+      },
+      {
+        no: 6,
+        title: "Kaki Babi & Makanan Kaleng",
+        desc: "Kaki babi kaleng & buah leci",
+        giver: "Budi Santoso & Helen Gunawan",
+        giverRel: "Om & Tante Hendry",
+        receiver: "Herman Liauw & Sylvia Chandra",
+        receiverRel: "Om & Tante Valensia"
+      },
+      {
+        no: 7,
+        title: "Wine Merah & Teh Spesial",
+        desc: "2 botol anggur merah & teh wangi",
+        giver: "Andy Tjhong & Novita Salim",
+        giverRel: "Om & Tante Hendry",
+        receiver: "Jeffrey Hau & Melinda Soetanto",
+        receiverRel: "Om & Tante Valensia"
+      },
+      {
+        no: 8,
+        title: "Uang Pesta & Lilin Sangjit",
+        desc: "Uang susu / angpao & sepasang lilin naga",
+        giver: "Ferry Tan & Grace Widjaja",
+        giverRel: "Keluarga Senior Hendry",
+        receiver: "William Hau & Olivia Hendarto",
+        receiverRel: "Keluarga Senior Valensia"
+      }
+    ];
+
+    // Local storage key for persistent checklist during event
+    const STORAGE_KEY = 'sangjit_baki_checked';
+    let checkedItems = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+
+    const tableBody = document.getElementById('baki-table-body');
+    const searchInput = document.getElementById('table-search');
+    const progressText = document.getElementById('progress-text');
+    const resetBtn = document.getElementById('reset-checklist');
+
+    const updateProgress = () => {
+      progressText.textContent = `Progres: ${checkedItems.length} / ${bakiList.length} Baki Selesai`;
+    };
+
+    const toggleCheck = (no) => {
+      if (checkedItems.includes(no)) {
+        checkedItems = checkedItems.filter(item => item !== no);
+      } else {
+        checkedItems.push(no);
+      }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(checkedItems));
+      updateProgress();
+      renderTable(searchInput.value);
+    };
+
+    resetBtn.addEventListener('click', () => {
+      if (confirm('Reset semua tanda centang baki?')) {
+        checkedItems = [];
+        localStorage.removeItem(STORAGE_KEY);
+        updateProgress();
+        renderTable(searchInput.value);
+      }
+    });
+
+    const renderTable = (filter = '') => {
+      tableBody.innerHTML = '';
+      const query = filter.toLowerCase().trim();
+
+      const filtered = bakiList.filter(item => {
+        if (!query) return true;
+        return (
+          item.title.toLowerCase().includes(query) ||
+          item.giver.toLowerCase().includes(query) ||
+          item.giverRel.toLowerCase().includes(query) ||
+          item.receiver.toLowerCase().includes(query) ||
+          item.receiverRel.toLowerCase().includes(query) ||
+          String(item.no).includes(query)
+        );
+      });
+
+      if (filtered.length === 0) {
+        tableBody.innerHTML = `
+          <tr>
+            <td colspan="5" class="py-8 text-center text-dark/40 italic">
+              Tidak ada data baki atau pasangan yang cocok dengan "${filter}"
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      filtered.forEach((item, idx) => {
+        const isChecked = checkedItems.includes(item.no);
+        const tr = document.createElement('tr');
+        tr.className = `transition-colors cursor-pointer ${
+          isChecked 
+          ? 'bg-emerald-50/60 hover:bg-emerald-50 text-dark/60' 
+          : (idx % 2 === 0 ? 'bg-white hover:bg-[#7e1416]/[0.02]' : 'bg-[#fbf8f1]/50 hover:bg-[#7e1416]/[0.03]')
+        }`;
+
+        // Row click toggles check
+        tr.onclick = (e) => {
+          toggleCheck(item.no);
+        };
+
+        tr.innerHTML = `
+          <!-- No -->
+          <td class="py-3.5 px-4 text-center font-bold font-serif ${isChecked ? 'text-emerald-700' : 'text-[#7e1416]'} text-base">
+            ${item.no}
+          </td>
+
+          <!-- Baki Name & Desc -->
+          <td class="py-3.5 px-5">
+            <div class="font-bold font-serif text-sm ${isChecked ? 'line-through opacity-70 text-dark' : 'text-[#7e1416]'}">
+              ${item.title}
+            </div>
+            <div class="text-[11px] text-dark/50 mt-0.5">
+              ${item.desc}
+            </div>
+          </td>
+
+          <!-- Giver (Pihak Hendry) -->
+          <td class="py-3.5 px-5 border-l border-[#7e1416]/10">
+            <div class="font-bold text-dark/90 ${isChecked ? 'line-through opacity-75' : ''}">
+              ${item.giver}
+            </div>
+            <div class="text-[11px] text-[#b08d29] font-medium mt-0.5">
+              ${item.giverRel}
+            </div>
+          </td>
+
+          <!-- Receiver (Pihak Valensia) -->
+          <td class="py-3.5 px-5 border-l border-[#7e1416]/10">
+            <div class="font-bold text-dark/90 ${isChecked ? 'line-through opacity-75' : ''}">
+              ${item.receiver}
+            </div>
+            <div class="text-[11px] text-[#b08d29] font-medium mt-0.5">
+              ${item.receiverRel}
+            </div>
+          </td>
+
+          <!-- Checkbox -->
+          <td class="py-3.5 px-4 text-center border-l border-[#7e1416]/10">
+            <input 
+              type="checkbox" 
+              ${isChecked ? 'checked' : ''} 
+              class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 cursor-pointer accent-emerald-700 pointer-events-none" 
+            />
+          </td>
+        `;
+
+        tableBody.appendChild(tr);
+      });
+    };
+
+    searchInput.addEventListener('input', (e) => {
+      renderTable(e.target.value);
+    });
+
+    // Initialize
+    updateProgress();
+    renderTable();
+  </script>
+
+  <style>
+    .custom-scrollbar::-webkit-scrollbar {
+      height: 6px;
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(126, 20, 22, 0.2);
+      border-radius: 8px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(126, 20, 22, 0.4);
+    }
+  </style>
+
+</Layout>

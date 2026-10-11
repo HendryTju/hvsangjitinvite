@@ -88,6 +88,59 @@ const SANGJIT_LOCAL_KEY = "wedding_bingo_emulated_sangjit_rsvps";
 const getSangjitLocalRsvps = () => JSON.parse(localStorage.getItem(SANGJIT_LOCAL_KEY) || "[]");
 const saveSangjitLocalRsvps = (rsvps) => localStorage.setItem(SANGJIT_LOCAL_KEY, JSON.stringify(rsvps));
 
+export const HENDRY_DUMMY_RSVPS = [
+  { name: "Lim Liong Sen", pax: 2, familyGroup: "Keluarga Mama", familyOf: "Hendry", tableNumber: "3", isDummy: true },
+  { name: "Elwin Lingga", pax: 2, familyGroup: "Keluarga Mama", familyOf: "Hendry", tableNumber: "3", isDummy: true },
+  { name: "Elkania", pax: 2, familyGroup: "Keluarga Mama", familyOf: "Hendry", tableNumber: "3", isDummy: true },
+  { name: "Tjhia Siat Cin", pax: 2, familyGroup: "Keluarga Mama", familyOf: "Hendry", tableNumber: "3", isDummy: true },
+  { name: "Tjandra + Evi", pax: 3, familyGroup: "Keluarga Mama", familyOf: "Hendry", tableNumber: "3", isDummy: true },
+  { name: "Andy + Afung", pax: 3, familyGroup: "Keluarga Mama", familyOf: "Hendry", tableNumber: "4", isDummy: true },
+  { name: "Hendri + Afong", pax: 3, familyGroup: "Keluarga Mama", familyOf: "Hendry", tableNumber: "4", isDummy: true },
+  { name: "Tju Djin Tjhong", pax: 2, familyGroup: "Keluarga Papa", familyOf: "Hendry", tableNumber: "1", isDummy: true },
+  { name: "Tju Miauw Tjhong", pax: 2, familyGroup: "Keluarga Papa", familyOf: "Hendry", tableNumber: "1", isDummy: true },
+  { name: "Tju Kong Tjhong (Ahiong)", pax: 2, familyGroup: "Keluarga Papa", familyOf: "Hendry", tableNumber: "1", isDummy: true },
+  { name: "Hengky", pax: 2, familyGroup: "Keluarga Papa", familyOf: "Hendry", tableNumber: "1", isDummy: true },
+  { name: "Lay Ket Bun", pax: 2, familyGroup: "Keluarga Papa", familyOf: "Hendry", tableNumber: "1", isDummy: true },
+  { name: "Michael", pax: 2, familyGroup: "Keluarga Papa", familyOf: "Hendry", tableNumber: "2", isDummy: true },
+  { name: "Ivan Lauwira", pax: 2, familyGroup: "Keluarga Papa", familyOf: "Hendry", tableNumber: "2", isDummy: true },
+  { name: "Tju Se Hien", pax: 2, familyGroup: "Keluarga Papa", familyOf: "Hendry", tableNumber: "2", isDummy: true },
+  { name: "Tju Nyap Liong", pax: 2, familyGroup: "Keluarga Papa", familyOf: "Hendry", tableNumber: "2", isDummy: true }
+];
+
+export async function seedSangjitDummyData() {
+  const dummyDocs = HENDRY_DUMMY_RSVPS.map((item, index) => ({
+    id: "dummy_hendry_" + (index + 1),
+    name: item.name,
+    pax: item.pax,
+    diet: "None",
+    familyOf: item.familyOf,
+    familyGroup: item.familyGroup,
+    tableNumber: item.tableNumber,
+    confirmed: true,
+    source: "dummy",
+    isDummy: true,
+    timestamp: new Date().toISOString()
+  }));
+
+  if (isEmulated) {
+    const existing = getSangjitLocalRsvps().filter(r => !r.isDummy);
+    const combined = [...dummyDocs, ...existing];
+    saveSangjitLocalRsvps(combined);
+    return combined;
+  } else {
+    try {
+      for (const docData of dummyDocs) {
+        await addDoc(collection(db, "sangjit_rsvps"), docData);
+      }
+      return await getAllSangjitRsvps();
+    } catch (e) {
+      console.warn("Could not write dummy to firestore, fallback to local:", e);
+      saveSangjitLocalRsvps(dummyDocs);
+      return dummyDocs;
+    }
+  }
+}
+
 export async function submitSangjitRsvp(data) {
   const rsvpDoc = {
     ...data,
